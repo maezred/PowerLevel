@@ -24,6 +24,19 @@ public class Listeners implements Listener {
 
 	protected Listeners(final Plugin instance) {
 		plugin = instance;
+		final Runnable runnable;
+
+		runnable = new Runnable() {
+
+			@Override
+			public void run() {
+				for (PlayerHandler playerHandler : players.values()) {
+					playerHandler.refreshEffects();
+				}
+			}
+		};
+
+		clock = plugin.getServer().getScheduler().runTaskTimer(plugin, runnable, 0, 100);
 	}
 
 	public void refreshEffects(final Player player) {
