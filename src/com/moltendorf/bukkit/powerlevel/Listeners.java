@@ -24,6 +24,11 @@ public class Listeners implements Listener {
 
 	protected Listeners(final Plugin instance) {
 		plugin = instance;
+
+		for (Player player : plugin.getServer().getOnlinePlayers()) {
+			players.put(player.getUniqueId(), new PlayerHandler(player));
+		}
+
 		final Runnable runnable;
 
 		runnable = new Runnable() {
