@@ -39,6 +39,8 @@ public class PlayerHandler {
 		// Intentionally doing integer division.
 		int effectLevel = (player.getLevel() - 100) / 10;
 
+		double health = player.getHealth();
+
 		if (effectLevel != currentEffectLevel) {
 			currentPotions.clear();
 
@@ -81,8 +83,6 @@ public class PlayerHandler {
 
 			currentEffects = effects;
 		}
-
-		double health = player.getHealth();
 
 		player.addPotionEffects(currentPotions);
 
