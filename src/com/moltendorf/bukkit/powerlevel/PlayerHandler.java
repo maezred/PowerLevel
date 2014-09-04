@@ -52,7 +52,7 @@ public class PlayerHandler {
 			}
 
 			// Level 130-140 bonuses.
-			if (effectLevel >= 2) {
+			if (effectLevel >= 3) {
 				int amplifier = amplifier(effectLevel, 3, 1);
 
 				if (amplifier >= 0) {
