@@ -76,9 +76,7 @@ public class PlayerHandler {
 			}
 
 			for (PotionEffectType effect : currentEffects) {
-				if (!effects.contains(effect)) {
-					player.removePotionEffect(effect);
-				}
+				player.removePotionEffect(effect);
 			}
 
 			currentEffects = effects;
