@@ -26,17 +26,13 @@ public class PlayerHandler {
 	}
 
 	private int amplifier(final int effectLevel, final int startingEffectLevel, final int maximumAmplifier) {
-		if (effectLevel >= startingEffectLevel) {
-			final int finalEffectLevel = startingEffectLevel + maximumAmplifier;
+		final int finalEffectLevel = startingEffectLevel + maximumAmplifier;
 
-			for (int i = startingEffectLevel; ; ++i) {
-				if (i == finalEffectLevel || i == effectLevel) {
-					return i;
-				}
+		for (int i = startingEffectLevel; ; ++i) {
+			if (i == finalEffectLevel || i == effectLevel) {
+				return i - startingEffectLevel;
 			}
 		}
-
-		return -1;
 	}
 
 	public void refreshEffects() {
