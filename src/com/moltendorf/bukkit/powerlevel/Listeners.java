@@ -5,6 +5,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerExpChangeEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.LinkedHashMap;
@@ -63,6 +64,19 @@ public class Listeners implements Listener {
 
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void PlayerExpChangeEventMonitor(final PlayerExpChangeEvent event) {
+
+		// Are we enabled at all?
+		if (!plugin.configuration.global.enabled) {
+			return;
+		}
+
+		final Player player = event.getPlayer();
+
+		refreshEffects(player);
+	}
+
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	public void PlayerJoinEventMonitor(final PlayerJoinEvent event) {
 
 		// Are we enabled at all?
 		if (!plugin.configuration.global.enabled) {
