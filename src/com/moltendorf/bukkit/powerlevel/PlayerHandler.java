@@ -47,7 +47,7 @@ public class PlayerHandler {
 				int amplifier = amplifier(effectLevel, 1, 1);
 
 				if (amplifier >= 0) {
-					currentPotions.add(new PotionEffect(PotionEffectType.JUMP, 160, amplifier, true));
+					currentPotions.add(new PotionEffect(PotionEffectType.JUMP, 180, amplifier, true));
 				}
 			}
 
@@ -56,7 +56,7 @@ public class PlayerHandler {
 				int amplifier = amplifier(effectLevel, 3, 1);
 
 				if (amplifier >= 0) {
-					currentPotions.add(new PotionEffect(PotionEffectType.SPEED, 160, amplifier, true));
+					currentPotions.add(new PotionEffect(PotionEffectType.SPEED, 180, amplifier, true));
 				}
 			}
 
@@ -65,7 +65,7 @@ public class PlayerHandler {
 				int amplifier = amplifier(effectLevel, 5, 4);
 
 				if (amplifier >= 0) {
-					currentPotions.add(new PotionEffect(PotionEffectType.HEALTH_BOOST, 160, amplifier, true));
+					currentPotions.add(new PotionEffect(PotionEffectType.HEALTH_BOOST, 180, amplifier, true));
 				}
 			}
 
