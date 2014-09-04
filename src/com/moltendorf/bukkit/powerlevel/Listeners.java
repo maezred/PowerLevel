@@ -26,7 +26,7 @@ public class Listeners implements Listener {
 		plugin = instance;
 
 		for (Player player : plugin.getServer().getOnlinePlayers()) {
-			players.put(player.getUniqueId(), new PlayerHandler(player));
+			refreshEffects(player);
 		}
 
 		final Runnable runnable;
