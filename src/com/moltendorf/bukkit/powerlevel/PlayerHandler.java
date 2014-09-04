@@ -82,6 +82,7 @@ public class PlayerHandler {
 			}
 
 			currentEffects = effects;
+			currentEffectLevel = effectLevel;
 		}
 
 		player.addPotionEffects(currentPotions);
