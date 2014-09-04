@@ -82,6 +82,12 @@ public class PlayerHandler {
 			currentEffects = effects;
 		}
 
+		double health = player.getHealth();
+
 		player.addPotionEffects(currentPotions);
+
+		if (health <= player.getMaxHealth()) {
+			player.setHealth(health);
+		}
 	}
 }
