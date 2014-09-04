@@ -41,6 +41,10 @@ public class PlayerHandler {
 
 		double health = player.getHealth();
 
+		for (PotionEffectType effect : currentEffects) {
+			player.removePotionEffect(effect);
+		}
+
 		if (effectLevel != currentEffectLevel) {
 			currentPotions.clear();
 
@@ -75,10 +79,6 @@ public class PlayerHandler {
 
 			for (PotionEffect potion : currentPotions) {
 				effects.add(potion.getType());
-			}
-
-			for (PotionEffectType effect : currentEffects) {
-				player.removePotionEffect(effect);
 			}
 
 			currentEffects = effects;
