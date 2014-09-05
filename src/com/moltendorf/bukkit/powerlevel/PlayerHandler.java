@@ -37,7 +37,7 @@ public class PlayerHandler {
 
 	public void refreshEffects() {
 		// Intentionally doing integer division.
-		int effectLevel = (player.getLevel() - 100) / 10;
+		int effectLevel = (player.getLevel() - 50) / 5; // Level 50 == effectLevel 0.
 
 		double health = player.getHealth();
 
@@ -48,7 +48,7 @@ public class PlayerHandler {
 		if (effectLevel != currentEffectLevel) {
 			currentPotions.clear();
 
-			// Level 110-120 bonuses.
+			// Level 55-60 bonuses.
 			if (effectLevel >= 1) {
 				int amplifier = amplifier(effectLevel, 1, 1);
 
@@ -57,7 +57,7 @@ public class PlayerHandler {
 				}
 			}
 
-			// Level 130-140 bonuses.
+			// Level 65-70 bonuses.
 			if (effectLevel >= 3) {
 				int amplifier = amplifier(effectLevel, 3, 1);
 
@@ -66,7 +66,7 @@ public class PlayerHandler {
 				}
 			}
 
-			// Level 150-190 bonuses.
+			// Level 75-95 bonuses.
 			if (effectLevel >= 5) {
 				int amplifier = amplifier(effectLevel, 5, 4);
 
