@@ -4,13 +4,16 @@ import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import java.util.*;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * @author moltendorf
  */
 public class PlayerHandler {
 	public Player player;
+
+	protected ExperienceManager xp;
 
 	private Set<PotionEffectType> currentEffects = new LinkedHashSet<>(3);
 	private Set<PotionEffect> currentPotions = new LinkedHashSet<>(3);
@@ -19,6 +22,8 @@ public class PlayerHandler {
 
 	public PlayerHandler(Player player) {
 		this.player = player;
+
+		xp = new ExperienceManager(player);
 	}
 
 	private int amplifier(final int effectLevel, final int startingEffectLevel) {
