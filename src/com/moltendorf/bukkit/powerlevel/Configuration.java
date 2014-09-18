@@ -25,8 +25,29 @@ public class Configuration {
 			Material.DIAMOND_AXE,
 			Material.DIAMOND_PICKAXE,
 			Material.DIAMOND_SPADE,
-			Material.DIAMOND_SWORD
+			Material.DIAMOND_SWORD,
 
+			Material.IRON_AXE,
+			Material.IRON_PICKAXE,
+			Material.IRON_SPADE,
+			Material.IRON_SWORD,
+
+			Material.STONE_AXE,
+			Material.STONE_PICKAXE,
+			Material.STONE_SPADE,
+			Material.STONE_SWORD,
+
+			Material.WOOD_AXE,
+			Material.WOOD_PICKAXE,
+			Material.WOOD_SPADE,
+			Material.WOOD_SWORD,
+
+			Material.GOLD_AXE,
+			Material.GOLD_PICKAXE,
+			Material.GOLD_SPADE,
+			Material.GOLD_SWORD,
+
+			Material.SHEARS
 		));
 
 		final protected HashMap<Material, Double> equipmentValues = new HashMap<Material, Double>() {{
