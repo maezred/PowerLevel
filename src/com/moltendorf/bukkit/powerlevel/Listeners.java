@@ -150,15 +150,7 @@ public class Listeners implements Listener {
 				playerHandler = fetchedPlayerHandler;
 			}
 
-			final double discount;
-
-			if (plugin.configuration.global.diamondEquipment.contains(type)) {
-				discount = plugin.configuration.global.diamondDiscount;
-			} else {
-				discount = 1;
-			}
-
-			final double experienceMean = plugin.configuration.global.repairExperienceCost * discount / maxDurability;
+			final double experienceMean = plugin.configuration.global.equipmentValues.get(type);
 			final int experience = (int) experienceMean;
 
 			final int currentExperience = playerHandler.xp.getCurrentExp();
