@@ -18,8 +18,8 @@ public class Configuration {
 		// Final data.
 		final protected boolean enabled = true; // Whether or not the plugin is enabled at all; useful for using it as an interface (default is true).
 
-		final protected int repairExperience = 11105;
-		final protected double repairExperienceCost = 1895;
+		final protected int repairExperience = 8765;
+		final protected double repairExperienceCost = 1395;
 
 		final protected HashSet<Material> blockEquipment = new HashSet<>(Arrays.asList(
 			Material.DIAMOND_AXE,
