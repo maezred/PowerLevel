@@ -22,151 +22,151 @@ import java.util.UUID;
  */
 public class Listeners implements Listener {
 
-	final protected Plugin plugin;
+    final protected Plugin plugin;
 
-	protected BukkitTask clock = null;
+    protected BukkitTask clock = null;
 
-	protected Map<UUID, PlayerHandler> players = new LinkedHashMap<>();
+    protected Map<UUID, PlayerHandler> players = new LinkedHashMap<>();
 
-	protected Listeners(final Plugin instance) {
-		plugin = instance;
+    protected Listeners(final Plugin instance) {
+        plugin = instance;
 
-		for (Player player : plugin.getServer().getOnlinePlayers()) {
-			refreshEffects(player);
-		}
+        for (Player player : plugin.getServer().getOnlinePlayers()) {
+            refreshEffects(player);
+        }
 
-		final Runnable runnable;
+        final Runnable runnable;
 
-		runnable = new Runnable() {
+        runnable = new Runnable() {
 
-			@Override
-			public void run() {
-				for (PlayerHandler playerHandler : players.values()) {
-					playerHandler.refreshEffects();
-				}
-			}
-		};
+            @Override
+            public void run() {
+                for (PlayerHandler playerHandler : players.values()) {
+                    playerHandler.refreshEffects();
+                }
+            }
+        };
 
-		clock = plugin.getServer().getScheduler().runTaskTimer(plugin, runnable, 0, 100);
-	}
+        clock = plugin.getServer().getScheduler().runTaskTimer(plugin, runnable, 0, 100);
+    }
 
-	public void refreshEffects(final Player player) {
-		final UUID id = player.getUniqueId();
+    public void refreshEffects(final Player player) {
+        final UUID id = player.getUniqueId();
 
-		final PlayerHandler playerHandler;
-		PlayerHandler fetchedPlayerHandler = players.get(id);
+        final PlayerHandler playerHandler;
+        PlayerHandler fetchedPlayerHandler = players.get(id);
 
-		// This should never happen.
-		if (fetchedPlayerHandler == null) {
-			playerHandler = new PlayerHandler(player);
-			players.put(id, playerHandler);
-		} else {
-			playerHandler = fetchedPlayerHandler;
-		}
+        // This should never happen.
+        if (fetchedPlayerHandler == null) {
+            playerHandler = new PlayerHandler(player);
+            players.put(id, playerHandler);
+        } else {
+            playerHandler = fetchedPlayerHandler;
+        }
 
-		playerHandler.refreshEffects();
-	}
+        playerHandler.refreshEffects();
+    }
 
-	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-	public void PlayerExpChangeEventMonitor(final PlayerExpChangeEvent event) {
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void PlayerExpChangeEventMonitor(final PlayerExpChangeEvent event) {
 
-		// Are we enabled at all?
-		if (!plugin.configuration.global.enabled) {
-			return;
-		}
+        // Are we enabled at all?
+        if (!plugin.configuration.global.enabled) {
+            return;
+        }
 
-		final Player player = event.getPlayer();
+        final Player player = event.getPlayer();
 
-		refreshEffects(player);
-	}
+        refreshEffects(player);
+    }
 
-	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-	public void PlayerJoinEventMonitor(final PlayerJoinEvent event) {
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void PlayerJoinEventMonitor(final PlayerJoinEvent event) {
 
-		// Are we enabled at all?
-		if (!plugin.configuration.global.enabled) {
-			return;
-		}
+        // Are we enabled at all?
+        if (!plugin.configuration.global.enabled) {
+            return;
+        }
 
-		final Player player = event.getPlayer();
+        final Player player = event.getPlayer();
 
-		refreshEffects(player);
-	}
+        refreshEffects(player);
+    }
 
-	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-	public void PlayerQuitEventMonitor(final PlayerQuitEvent event) {
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void PlayerQuitEventMonitor(final PlayerQuitEvent event) {
 
-		// Are we enabled at all?
-		if (!plugin.configuration.global.enabled) {
-			return;
-		}
+        // Are we enabled at all?
+        if (!plugin.configuration.global.enabled) {
+            return;
+        }
 
-		final Player player = event.getPlayer();
+        final Player player = event.getPlayer();
 
-		players.remove(player.getUniqueId());
-	}
+        players.remove(player.getUniqueId());
+    }
 
-	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-	public void BlockBreakEventMonitor(final BlockBreakEvent event) {
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void BlockBreakEventMonitor(final BlockBreakEvent event) {
 
-		// Are we enabled at all?
-		if (!plugin.configuration.global.enabled) {
-			return;
-		}
+        // Are we enabled at all?
+        if (!plugin.configuration.global.enabled) {
+            return;
+        }
 
-		final Player player = event.getPlayer();
+        final Player player = event.getPlayer();
 
-		if (player == null) {
-			return;
-		}
+        if (player == null) {
+            return;
+        }
 
-		ItemStack item = player.getItemInHand();
-		Material type = item.getType();
+        ItemStack item = player.getItemInHand();
+        Material type = item.getType();
 
-		if (!plugin.configuration.global.blockEquipment.contains(type)) {
-			return;
-		}
+        if (!plugin.configuration.global.blockEquipment.contains(type)) {
+            return;
+        }
 
-		// Since we require Unbreaking III, we don't need to worry about updating the client's perceived durability.
-		if (item.getEnchantmentLevel(Enchantment.DURABILITY) < 3) {
-			return;
-		}
+        // Since we require Unbreaking III, we don't need to worry about updating the client's perceived durability.
+        if (item.getEnchantmentLevel(Enchantment.DURABILITY) < 3) {
+            return;
+        }
 
-		short durability = item.getDurability();
-		short maxDurability = type.getMaxDurability();
+        short durability = item.getDurability();
+        short maxDurability = type.getMaxDurability();
 
-		// +1 to avoid flickering health bar on tool.
-		if ((maxDurability - durability + 1) < maxDurability) {
-			final UUID id = player.getUniqueId();
+        // +1 to avoid flickering health bar on tool.
+        if ((maxDurability - durability + 1) < maxDurability) {
+            final UUID id = player.getUniqueId();
 
-			final PlayerHandler playerHandler;
-			PlayerHandler fetchedPlayerHandler = players.get(id);
+            final PlayerHandler playerHandler;
+            PlayerHandler fetchedPlayerHandler = players.get(id);
 
-			// This should never happen.
-			if (fetchedPlayerHandler == null) {
-				playerHandler = new PlayerHandler(player);
-				players.put(id, playerHandler);
-			} else {
-				playerHandler = fetchedPlayerHandler;
-			}
+            // This should never happen.
+            if (fetchedPlayerHandler == null) {
+                playerHandler = new PlayerHandler(player);
+                players.put(id, playerHandler);
+            } else {
+                playerHandler = fetchedPlayerHandler;
+            }
 
-			final double experienceMean = plugin.configuration.global.equipmentValues.get(type);
-			final int experience = (int) experienceMean;
+            final double experienceMean = plugin.configuration.global.equipmentValues.get(type);
+            final int experience = (int) experienceMean;
 
-			final int currentExperience = playerHandler.xp.getCurrentExp();
+            final int currentExperience = playerHandler.xp.getCurrentExp();
 
-			if (currentExperience - Math.ceil(experienceMean) >= plugin.configuration.global.repairExperience) {
-				final int experienceChange;
+            if (currentExperience - Math.ceil(experienceMean) >= plugin.configuration.global.repairExperience) {
+                final int experienceChange;
 
-				if (Math.random() > experienceMean - experience) {
-					experienceChange = 0 - experience;
-				} else {
-					experienceChange = 0 - experience - 1;
-				}
+                if (Math.random() > experienceMean - experience) {
+                    experienceChange = 0 - experience;
+                } else {
+                    experienceChange = 0 - experience - 1;
+                }
 
-				playerHandler.xp.changeExp(experienceChange);
-				item.setDurability((short) (durability - 1));
-			}
-		}
-	}
+                playerHandler.xp.changeExp(experienceChange);
+                item.setDurability((short) (durability - 1));
+            }
+        }
+    }
 }

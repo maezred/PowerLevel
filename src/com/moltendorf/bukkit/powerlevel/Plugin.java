@@ -11,34 +11,34 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 public class Plugin extends JavaPlugin {
 
-	// Variable data.
-	protected Configuration configuration = null;
+    // Variable data.
+    protected Configuration configuration = null;
 
-	@Override
-	public synchronized void onDisable() {
+    @Override
+    public synchronized void onDisable() {
 
-		// Clear data.
-		configuration = null;
-	}
+        // Clear data.
+        configuration = null;
+    }
 
-	@Override
-	public synchronized void onEnable() {
+    @Override
+    public synchronized void onEnable() {
 
-		// Construct new configuration.
-		configuration = new Configuration();
+        // Construct new configuration.
+        configuration = new Configuration();
 
-		// Are we enabled?
-		if (!configuration.global.enabled) {
-			return;
-		}
+        // Are we enabled?
+        if (!configuration.global.enabled) {
+            return;
+        }
 
-		// Get server.
-		final Server server = getServer();
+        // Get server.
+        final Server server = getServer();
 
-		// Get plugin manager.
-		final PluginManager manager = server.getPluginManager();
+        // Get plugin manager.
+        final PluginManager manager = server.getPluginManager();
 
-		// Register our event listeners.
-		manager.registerEvents(new Listeners(this), this);
-	}
+        // Register our event listeners.
+        manager.registerEvents(new Listeners(this), this);
+    }
 }
