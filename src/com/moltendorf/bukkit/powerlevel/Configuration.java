@@ -169,7 +169,7 @@ public class Configuration {
 
 			// Leather armor.
 
-			put(Material.LEATHER_HELMET, x / dhd * +m);
+			put(Material.LEATHER_HELMET, x / dhd * m);
 			put(Material.LEATHER_CHESTPLATE, x / dcd * m);
 			put(Material.LEATHER_LEGGINGS, x / dld * m);
 			put(Material.LEATHER_BOOTS, x / dbd * m);
