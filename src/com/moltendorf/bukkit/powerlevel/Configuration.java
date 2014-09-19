@@ -2,9 +2,7 @@ package com.moltendorf.bukkit.powerlevel;
 
 import org.bukkit.Material;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.*;
 
 /**
  * Configuration class.
@@ -21,7 +19,7 @@ public class Configuration {
 
 		final protected int repairExperience = 8765;
 
-		final protected HashSet<Material> blockEquipment = new HashSet<>(Arrays.asList(
+		final protected Set<Material> blockEquipment = new HashSet<>(Arrays.asList(
 			Material.DIAMOND_AXE,
 			Material.DIAMOND_PICKAXE,
 			Material.DIAMOND_SPADE,
@@ -50,7 +48,7 @@ public class Configuration {
 			Material.SHEARS
 		));
 
-		final protected HashMap<Material, Double> equipmentValues = new HashMap<Material, Double>() {{
+		final protected Map<Material, Double> equipmentValues = new HashMap<Material, Double>() {{
 			final double d = .15; // Discount.
 
 			final double x = 1395; // Experience for repairs to full durability.
