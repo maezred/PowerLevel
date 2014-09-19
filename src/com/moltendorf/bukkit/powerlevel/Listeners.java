@@ -13,160 +13,236 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitTask;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Created by moltendorf on 14/09/03.
  */
 public class Listeners implements Listener {
 
-    final protected Plugin plugin;
+	final protected Plugin plugin;
 
-    protected BukkitTask clock = null;
+	protected BukkitTask clock = null;
 
-    protected Map<UUID, PlayerHandler> players = new LinkedHashMap<>();
+	protected Map<UUID, PlayerHandler> players = new LinkedHashMap<>();
 
-    protected Listeners(final Plugin instance) {
-        plugin = instance;
+	protected Listeners(final Plugin instance) {
+		plugin = instance;
 
-        for (Player player : plugin.getServer().getOnlinePlayers()) {
-            refreshEffects(player);
-        }
+		for (Player player : plugin.getServer().getOnlinePlayers()) {
+			refreshEffects(player);
+		}
 
-        final Runnable runnable;
+		final Runnable runnable;
 
-        runnable = new Runnable() {
+		runnable = new Runnable() {
 
-            @Override
-            public void run() {
-                for (PlayerHandler playerHandler : players.values()) {
-                    playerHandler.refreshEffects();
-                }
-            }
-        };
+			@Override
+			public void run() {
+				for (PlayerHandler playerHandler : players.values()) {
+					playerHandler.refreshEffects();
+				}
+			}
+		};
 
-        clock = plugin.getServer().getScheduler().runTaskTimer(plugin, runnable, 0, 100);
-    }
+		clock = plugin.getServer().getScheduler().runTaskTimer(plugin, runnable, 0, 100);
+	}
 
-    public void refreshEffects(final Player player) {
-        final UUID id = player.getUniqueId();
+	public void refreshEffects(final Player player) {
+		final UUID id = player.getUniqueId();
 
-        final PlayerHandler playerHandler;
-        PlayerHandler fetchedPlayerHandler = players.get(id);
+		final PlayerHandler playerHandler;
+		PlayerHandler fetchedPlayerHandler = players.get(id);
 
-        // This should never happen.
-        if (fetchedPlayerHandler == null) {
-            playerHandler = new PlayerHandler(player);
-            players.put(id, playerHandler);
-        } else {
-            playerHandler = fetchedPlayerHandler;
-        }
+		// This should never happen.
+		if (fetchedPlayerHandler == null) {
+			playerHandler = new PlayerHandler(player);
+			players.put(id, playerHandler);
+		} else {
+			playerHandler = fetchedPlayerHandler;
+		}
 
-        playerHandler.refreshEffects();
-    }
+		playerHandler.refreshEffects();
+	}
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void PlayerExpChangeEventMonitor(final PlayerExpChangeEvent event) {
+	public void repairArmor(final Player player) {
+		final UUID id = player.getUniqueId();
 
-        // Are we enabled at all?
-        if (!plugin.configuration.global.enabled) {
-            return;
-        }
+		final PlayerHandler playerHandler;
+		PlayerHandler fetchedPlayerHandler = players.get(id);
 
-        final Player player = event.getPlayer();
+		// This should never happen.
+		if (fetchedPlayerHandler == null) {
+			playerHandler = new PlayerHandler(player);
+			players.put(id, playerHandler);
+		} else {
+			playerHandler = fetchedPlayerHandler;
+		}
 
-        refreshEffects(player);
-    }
+		final List<ItemStack> equipment = Arrays.asList(player.getEquipment().getArmorContents());
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void PlayerJoinEventMonitor(final PlayerJoinEvent event) {
+		double experienceMean = 0;
 
-        // Are we enabled at all?
-        if (!plugin.configuration.global.enabled) {
-            return;
-        }
+		for (Iterator<ItemStack> iterator = equipment.iterator(); iterator.hasNext(); ) {
+			final ItemStack item = iterator.next();
+			final Material type = item.getType();
 
-        final Player player = event.getPlayer();
+			if (!plugin.configuration.global.armorEquipment.contains(type)) {
+				iterator.remove();
 
-        refreshEffects(player);
-    }
+				continue;
+			}
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void PlayerQuitEventMonitor(final PlayerQuitEvent event) {
+			if (item.getEnchantmentLevel(Enchantment.DURABILITY) < 3) {
+				iterator.remove();
 
-        // Are we enabled at all?
-        if (!plugin.configuration.global.enabled) {
-            return;
-        }
+				continue;
+			}
 
-        final Player player = event.getPlayer();
+			final short durability = item.getDurability();
+			final short maxDurability = type.getMaxDurability();
 
-        players.remove(player.getUniqueId());
-    }
+			if ((maxDurability - durability + 1) < maxDurability) {
+				experienceMean += plugin.configuration.global.equipmentValues.get(type);
+			} else {
+				iterator.remove();
+			}
+		}
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void BlockBreakEventMonitor(final BlockBreakEvent event) {
+		// Nothing to repair.
+		if (experienceMean == 0) {
+			return;
+		}
 
-        // Are we enabled at all?
-        if (!plugin.configuration.global.enabled) {
-            return;
-        }
+		final int experienceCeil = (int) Math.ceil(experienceMean);
+		final int experienceFloor = (int) experienceMean;
 
-        final Player player = event.getPlayer();
+		final int currentExperience = playerHandler.xp.getCurrentExp();
 
-        if (player == null) {
-            return;
-        }
+		// Don't do anything unless the player has enough experience to repair all of their equipment.
+		if (currentExperience - experienceCeil >= plugin.configuration.global.repairExperience) {
+			final int experienceChange;
 
-        ItemStack item = player.getItemInHand();
-        Material type = item.getType();
+			if (Math.random() > experienceMean - experienceFloor) {
+				experienceChange = 0 - experienceFloor;
+			} else {
+				experienceChange = 0 - experienceCeil;
+			}
 
-        if (!plugin.configuration.global.blockEquipment.contains(type)) {
-            return;
-        }
+			playerHandler.xp.changeExp(experienceChange);
 
-        // Since we require Unbreaking III, we don't need to worry about updating the client's perceived durability.
-        if (item.getEnchantmentLevel(Enchantment.DURABILITY) < 3) {
-            return;
-        }
+			// Repair all damaged equipment.
+			for (ItemStack item : equipment) {
+				item.setDurability((short) (item.getDurability() - 1));
+			}
+		}
+	}
 
-        short durability = item.getDurability();
-        short maxDurability = type.getMaxDurability();
+	public void repairTool(final Player player) {
+		ItemStack item = player.getItemInHand();
+		Material type = item.getType();
 
-        // +1 to avoid flickering health bar on tool.
-        if ((maxDurability - durability + 1) < maxDurability) {
-            final UUID id = player.getUniqueId();
+		if (!plugin.configuration.global.blockEquipment.contains(type)) {
+			return;
+		}
 
-            final PlayerHandler playerHandler;
-            PlayerHandler fetchedPlayerHandler = players.get(id);
+		// Since we require Unbreaking III, we don't need to worry about updating the client's perceived durability.
+		if (item.getEnchantmentLevel(Enchantment.DURABILITY) < 3) {
+			return;
+		}
 
-            // This should never happen.
-            if (fetchedPlayerHandler == null) {
-                playerHandler = new PlayerHandler(player);
-                players.put(id, playerHandler);
-            } else {
-                playerHandler = fetchedPlayerHandler;
-            }
+		short durability = item.getDurability();
+		short maxDurability = type.getMaxDurability();
 
-            final double experienceMean = plugin.configuration.global.equipmentValues.get(type);
-            final int experience = (int) experienceMean;
+		// +1 to avoid flickering health bar on tool.
+		if ((maxDurability - durability + 1) < maxDurability) {
+			final UUID id = player.getUniqueId();
 
-            final int currentExperience = playerHandler.xp.getCurrentExp();
+			final PlayerHandler playerHandler;
+			PlayerHandler fetchedPlayerHandler = players.get(id);
 
-            if (currentExperience - Math.ceil(experienceMean) >= plugin.configuration.global.repairExperience) {
-                final int experienceChange;
+			// This should never happen.
+			if (fetchedPlayerHandler == null) {
+				playerHandler = new PlayerHandler(player);
+				players.put(id, playerHandler);
+			} else {
+				playerHandler = fetchedPlayerHandler;
+			}
 
-                if (Math.random() > experienceMean - experience) {
-                    experienceChange = 0 - experience;
-                } else {
-                    experienceChange = 0 - experience - 1;
-                }
+			final double experienceMean = plugin.configuration.global.equipmentValues.get(type);
 
-                playerHandler.xp.changeExp(experienceChange);
-                item.setDurability((short) (durability - 1));
-            }
-        }
-    }
+			final int experienceCeil = (int) Math.ceil(experienceMean);
+			final int experienceFloor = (int) experienceMean;
+
+			final int currentExperience = playerHandler.xp.getCurrentExp();
+
+			if (currentExperience - experienceCeil >= plugin.configuration.global.repairExperience) {
+				final int experienceChange;
+
+				if (Math.random() > experienceMean - experienceFloor) {
+					experienceChange = 0 - experienceFloor;
+				} else {
+					experienceChange = 0 - experienceCeil;
+				}
+
+				playerHandler.xp.changeExp(experienceChange);
+				item.setDurability((short) (durability - 1));
+			}
+		}
+	}
+
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	public void PlayerExpChangeEventMonitor(final PlayerExpChangeEvent event) {
+
+		// Are we enabled at all?
+		if (!plugin.configuration.global.enabled) {
+			return;
+		}
+
+		final Player player = event.getPlayer();
+
+		refreshEffects(player);
+	}
+
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	public void PlayerJoinEventMonitor(final PlayerJoinEvent event) {
+
+		// Are we enabled at all?
+		if (!plugin.configuration.global.enabled) {
+			return;
+		}
+
+		final Player player = event.getPlayer();
+
+		refreshEffects(player);
+	}
+
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	public void PlayerQuitEventMonitor(final PlayerQuitEvent event) {
+
+		// Are we enabled at all?
+		if (!plugin.configuration.global.enabled) {
+			return;
+		}
+
+		final Player player = event.getPlayer();
+
+		players.remove(player.getUniqueId());
+	}
+
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	public void BlockBreakEventMonitor(final BlockBreakEvent event) {
+		// Are we enabled at all?
+		if (!plugin.configuration.global.enabled) {
+			return;
+		}
+
+		final Player player = event.getPlayer();
+
+		if (player == null) {
+			return;
+		}
+
+		repairTool(player);
+	}
 }
