@@ -257,6 +257,10 @@ public class Listeners implements Listener {
 
 			repairTool(player, item, type);
 		}
+
+		if (event.getEntityType() == EntityType.PLAYER) {
+			repairArmor((Player) event.getEntity());
+		}
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
