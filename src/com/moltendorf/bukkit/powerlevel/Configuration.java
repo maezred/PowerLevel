@@ -79,6 +79,19 @@ public class Configuration {
 			Material.BOW
 		));
 
+		final protected Set<Material> farmEquipment = new HashSet<>(Arrays.asList(
+			Material.DIAMOND_HOE,
+			Material.IRON_HOE,
+			Material.STONE_HOE,
+			Material.WOOD_HOE,
+			Material.GOLD_HOE
+		));
+
+		final protected Set<Material> farmBlocks = new HashSet<>(Arrays.asList(
+			Material.DIRT,
+			Material.GRASS
+		));
+
 		final protected Set<Material> fireEquipment = new HashSet<>(Arrays.asList(
 			Material.FLINT_AND_STEEL
 		));

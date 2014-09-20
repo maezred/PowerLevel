@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockIgniteEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -322,6 +323,32 @@ public class Listeners implements Listener {
 		}
 
 		repairTool(player, item, type);
+	}
+
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	public void PlayerInteractEventMonitor(final PlayerInteractEvent event) {
+
+		// Are we enabled at all?
+		if (!plugin.configuration.global.enabled) {
+			return;
+		}
+
+		final ItemStack item = event.getItem();
+		final Material type = item.getType();
+
+		if (!plugin.configuration.global.farmEquipment.contains(type)) {
+			return;
+		}
+
+		if (event.getAction() != Action.RIGHT_CLICK_BLOCK) {
+			return;
+		}
+
+		if (!plugin.configuration.global.farmBlocks.contains(event.getClickedBlock().getType())) {
+			return;
+		}
+
+		repairTool(event.getPlayer(), item, type);
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
