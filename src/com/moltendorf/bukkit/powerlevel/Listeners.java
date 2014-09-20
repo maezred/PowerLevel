@@ -10,6 +10,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.player.PlayerExpChangeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -266,6 +267,30 @@ public class Listeners implements Listener {
 			Material type = item.getType();
 
 			if (!plugin.configuration.global.weaponEquipment.contains(type)) {
+				return;
+			}
+
+			repairTool(player, item, type);
+		}
+	}
+
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	public void EntityShootBowEventMonitor(final EntityShootBowEvent event) {
+
+		// Are we eneabled at all?
+		if (!plugin.configuration.global.enabled) {
+			return;
+		}
+
+		final Entity entity = event.getEntity();
+
+		if (entity.getType() == EntityType.PLAYER) {
+			final Player player = (Player) entity;
+
+			ItemStack item = player.getItemInHand();
+			Material type = item.getType();
+
+			if (!plugin.configuration.global.bowEquipment.contains(type)) {
 				return;
 			}
 

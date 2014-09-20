@@ -75,6 +75,10 @@ public class Configuration {
 			Material.SHEARS
 		));
 
+		final protected Set<Material> bowEquipment = new HashSet<>(Arrays.asList(
+			Material.BOW
+		));
+
 		final protected Set<Material> weaponEquipment = new HashSet<>(Arrays.asList(
 			Material.DIAMOND_AXE,
 			Material.DIAMOND_PICKAXE,
