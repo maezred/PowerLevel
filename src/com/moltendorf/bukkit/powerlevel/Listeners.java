@@ -188,6 +188,7 @@ public class Listeners implements Listener {
 
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void BlockBreakEventMonitor(final BlockBreakEvent event) {
+
 		// Are we enabled at all?
 		if (!plugin.configuration.global.enabled) {
 			return;
