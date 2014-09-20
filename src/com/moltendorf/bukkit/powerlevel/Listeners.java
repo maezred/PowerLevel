@@ -109,7 +109,7 @@ public class Listeners implements Listener {
 			final int repair;
 
 			if (item.containsEnchantment(Enchantment.THORNS)) {
-				repair = 4;
+				repair = 8;
 			} else {
 				repair = 1;
 			}
@@ -148,7 +148,7 @@ public class Listeners implements Listener {
 				final int repair;
 
 				if (item.containsEnchantment(Enchantment.THORNS)) {
-					repair = 4;
+					repair = 8;
 				} else {
 					repair = 1;
 				}
