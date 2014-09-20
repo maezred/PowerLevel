@@ -9,6 +9,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockIgniteEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.player.*;
@@ -204,6 +205,30 @@ public class Listeners implements Listener {
 		Material type = item.getType();
 
 		if (!plugin.configuration.global.blockEquipment.contains(type)) {
+			return;
+		}
+
+		repairTool(player, item, type);
+	}
+
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	public void BlockIgniteEventMonitor(final BlockIgniteEvent event) {
+
+		// Are we enabled at all?
+		if (!plugin.configuration.global.enabled) {
+			return;
+		}
+
+		final Player player = event.getPlayer();
+
+		if (player == null) {
+			return;
+		}
+
+		ItemStack item = player.getItemInHand();
+		Material type = item.getType();
+
+		if (!plugin.configuration.global.fireEquipment.contains(type)) {
 			return;
 		}
 
