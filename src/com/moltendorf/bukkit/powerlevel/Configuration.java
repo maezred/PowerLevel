@@ -15,7 +15,7 @@ public class Configuration {
 	static protected class Global {
 
 		// Final data.
-		final protected boolean enabled = true; // Whether or not the plugin is enabled at all; useful for using it as an interface (default is true).
+		final protected boolean enabled = true; // Whether or not the plugin is enabled at all; interface mode.
 
 		final protected int repairExperience = 8765;
 
