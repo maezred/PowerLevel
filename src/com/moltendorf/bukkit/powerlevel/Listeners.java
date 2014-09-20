@@ -187,45 +187,6 @@ public class Listeners implements Listener {
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-	public void PlayerExpChangeEventMonitor(final PlayerExpChangeEvent event) {
-
-		// Are we enabled at all?
-		if (!plugin.configuration.global.enabled) {
-			return;
-		}
-
-		final Player player = event.getPlayer();
-
-		refreshEffects(player);
-	}
-
-	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-	public void PlayerJoinEventMonitor(final PlayerJoinEvent event) {
-
-		// Are we enabled at all?
-		if (!plugin.configuration.global.enabled) {
-			return;
-		}
-
-		final Player player = event.getPlayer();
-
-		refreshEffects(player);
-	}
-
-	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-	public void PlayerQuitEventMonitor(final PlayerQuitEvent event) {
-
-		// Are we enabled at all?
-		if (!plugin.configuration.global.enabled) {
-			return;
-		}
-
-		final Player player = event.getPlayer();
-
-		players.remove(player.getUniqueId());
-	}
-
-	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void BlockBreakEventMonitor(final BlockBreakEvent event) {
 		// Are we enabled at all?
 		if (!plugin.configuration.global.enabled) {
@@ -297,7 +258,7 @@ public class Listeners implements Listener {
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-	public void PlayerShearEntityEventMonitor(final PlayerShearEntityEvent event) {
+	public void PlayerExpChangeEventMonitor(final PlayerExpChangeEvent event) {
 
 		// Are we enabled at all?
 		if (!plugin.configuration.global.enabled) {
@@ -306,14 +267,7 @@ public class Listeners implements Listener {
 
 		final Player player = event.getPlayer();
 
-		ItemStack item = player.getItemInHand();
-		Material type = item.getType();
-
-		if (!plugin.configuration.global.shearEquipment.contains(type)) {
-			return;
-		}
-
-		repairTool(player, item, type);
+		refreshEffects(player);
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -334,6 +288,52 @@ public class Listeners implements Listener {
 		Material type = item.getType();
 
 		if (!plugin.configuration.global.fishingEquipment.contains(type)) {
+			return;
+		}
+
+		repairTool(player, item, type);
+	}
+
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	public void PlayerJoinEventMonitor(final PlayerJoinEvent event) {
+
+		// Are we enabled at all?
+		if (!plugin.configuration.global.enabled) {
+			return;
+		}
+
+		final Player player = event.getPlayer();
+
+		refreshEffects(player);
+	}
+
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	public void PlayerQuitEventMonitor(final PlayerQuitEvent event) {
+
+		// Are we enabled at all?
+		if (!plugin.configuration.global.enabled) {
+			return;
+		}
+
+		final Player player = event.getPlayer();
+
+		players.remove(player.getUniqueId());
+	}
+
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	public void PlayerShearEntityEventMonitor(final PlayerShearEntityEvent event) {
+
+		// Are we enabled at all?
+		if (!plugin.configuration.global.enabled) {
+			return;
+		}
+
+		final Player player = event.getPlayer();
+
+		ItemStack item = player.getItemInHand();
+		Material type = item.getType();
+
+		if (!plugin.configuration.global.shearEquipment.contains(type)) {
 			return;
 		}
 
