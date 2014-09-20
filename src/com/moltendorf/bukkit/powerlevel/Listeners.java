@@ -334,6 +334,11 @@ public class Listeners implements Listener {
 		}
 
 		final ItemStack item = event.getItem();
+
+		if (item == null) {
+			return;
+		}
+
 		final Material type = item.getType();
 
 		if (!plugin.configuration.global.farmEquipment.contains(type)) {
