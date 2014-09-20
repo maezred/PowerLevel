@@ -87,7 +87,7 @@ public class Listeners implements Listener {
 
 		double experienceMean = 0;
 
-		for (Iterator<ItemStack> iterator = equipment.iterator(); iterator.hasNext(); ) {
+		for (Iterator<ItemStack> iterator = equipment.listIterator(); iterator.hasNext(); ) {
 			final ItemStack item = iterator.next();
 			final Material type = item.getType();
 
