@@ -11,10 +11,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityShootBowEvent;
-import org.bukkit.event.player.PlayerExpChangeEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerShearEntityEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -301,6 +298,7 @@ public class Listeners implements Listener {
 
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void PlayerShearEntityEventMonitor(final PlayerShearEntityEvent event) {
+
 		// Are we enabled at all?
 		if (!plugin.configuration.global.enabled) {
 			return;
@@ -312,6 +310,30 @@ public class Listeners implements Listener {
 		Material type = item.getType();
 
 		if (!plugin.configuration.global.shearEquipment.contains(type)) {
+			return;
+		}
+
+		repairTool(player, item, type);
+	}
+
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	public void PlayerFishEventMonitor(final PlayerFishEvent event) {
+
+		// Are we enabled at all?
+		if (!plugin.configuration.global.enabled) {
+			return;
+		}
+
+		if (event.getState() != PlayerFishEvent.State.FISHING) {
+
+		}
+
+		final Player player = event.getPlayer();
+
+		ItemStack item = player.getItemInHand();
+		Material type = item.getType();
+
+		if (!plugin.configuration.global.fishingEquipment.contains(type)) {
 			return;
 		}
 

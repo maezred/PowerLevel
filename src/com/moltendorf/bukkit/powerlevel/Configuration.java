@@ -79,6 +79,10 @@ public class Configuration {
 			Material.BOW
 		));
 
+		final protected Set<Material> fishingEquipment = new HashSet<>(Arrays.asList(
+			Material.FISHING_ROD
+		));
+
 		final protected Set<Material> shearEquipment = new HashSet<>(Arrays.asList(
 			Material.SHEARS
 		));
