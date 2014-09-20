@@ -83,7 +83,7 @@ public class Listeners implements Listener {
 			playerHandler = fetchedPlayerHandler;
 		}
 
-		final List<ItemStack> equipment = Arrays.asList(player.getEquipment().getArmorContents());
+		final List<ItemStack> equipment = new LinkedList<>(Arrays.asList(player.getEquipment().getArmorContents()));
 
 		double experienceMean = 0;
 
