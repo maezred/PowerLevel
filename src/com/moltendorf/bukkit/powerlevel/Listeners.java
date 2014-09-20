@@ -249,8 +249,8 @@ public class Listeners implements Listener {
 		repairTool(player, item, type);
 	}
 
-	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-	public void EntityDamageByEntityEventHandler(final EntityDamageByEntityEvent event) {
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	public void EntityDamageByEntityEventMonitor(final EntityDamageByEntityEvent event) {
 
 		// Are we enabled at all?
 		if (!plugin.configuration.global.enabled) {
