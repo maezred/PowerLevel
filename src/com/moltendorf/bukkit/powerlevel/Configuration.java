@@ -75,6 +75,14 @@ public class Configuration {
 			Material.SHEARS
 		));
 
+		final protected Set<Material> weaponEquipment = new HashSet<>(Arrays.asList(
+			Material.DIAMOND_SWORD,
+			Material.IRON_SWORD,
+			Material.STONE_SWORD,
+			Material.WOOD_SWORD,
+			Material.GOLD_SWORD
+		));
+
 		final protected Map<Material, Double> equipmentValues = new HashMap<Material, Double>() {{
 			final double d = .15; // Discount.
 

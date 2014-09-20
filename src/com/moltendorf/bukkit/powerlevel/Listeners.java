@@ -2,11 +2,14 @@ package com.moltendorf.bukkit.powerlevel;
 
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerExpChangeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -138,14 +141,7 @@ public class Listeners implements Listener {
 		}
 	}
 
-	public void repairTool(final Player player) {
-		ItemStack item = player.getItemInHand();
-		Material type = item.getType();
-
-		if (!plugin.configuration.global.blockEquipment.contains(type)) {
-			return;
-		}
-
+	public void repairTool(final Player player, final ItemStack item, final Material type) {
 		// Since we require Unbreaking III, we don't need to worry about updating the client's perceived durability.
 		if (item.getEnchantmentLevel(Enchantment.DURABILITY) < 3) {
 			return;
@@ -243,6 +239,37 @@ public class Listeners implements Listener {
 			return;
 		}
 
-		repairTool(player);
+		ItemStack item = player.getItemInHand();
+		Material type = item.getType();
+
+		if (!plugin.configuration.global.blockEquipment.contains(type)) {
+			return;
+		}
+
+		repairTool(player, item, type);
+	}
+
+	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+	public void EntityDamageByEntityEventHandler(final EntityDamageByEntityEvent event) {
+
+		// Are we enabled at all?
+		if (!plugin.configuration.global.enabled) {
+			return;
+		}
+
+		final Entity damager = event.getDamager();
+
+		if (damager.getType() == EntityType.PLAYER) {
+			final Player player = (Player) damager;
+
+			ItemStack item = player.getItemInHand();
+			Material type = item.getType();
+
+			if (!plugin.configuration.global.weaponEquipment.contains(type)) {
+				return;
+			}
+
+			repairTool(player, item, type);
+		}
 	}
 }
