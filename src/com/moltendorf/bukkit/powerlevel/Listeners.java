@@ -106,8 +106,16 @@ public class Listeners implements Listener {
 			final short durability = item.getDurability();
 			final short maxDurability = type.getMaxDurability();
 
-			if ((maxDurability - durability + 1) < maxDurability) {
-				experienceMean += plugin.configuration.global.equipmentValues.get(type);
+			final int repair;
+
+			if (item.containsEnchantment(Enchantment.THORNS)) {
+				repair = 4;
+			} else {
+				repair = 1;
+			}
+
+			if ((maxDurability - durability + repair) < maxDurability) {
+				experienceMean += repair * plugin.configuration.global.equipmentValues.get(type);
 			} else {
 				iterator.remove();
 			}
@@ -137,7 +145,15 @@ public class Listeners implements Listener {
 
 			// Repair all damaged equipment.
 			for (ItemStack item : equipment) {
-				item.setDurability((short) (item.getDurability() - 1));
+				final int repair;
+
+				if (item.containsEnchantment(Enchantment.THORNS)) {
+					repair = 4;
+				} else {
+					repair = 1;
+				}
+
+				item.setDurability((short) (item.getDurability() - repair));
 			}
 		}
 	}
