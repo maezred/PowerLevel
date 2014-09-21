@@ -115,7 +115,7 @@ public class Listeners implements Listener {
 			}
 
 			if ((maxDurability - durability + repair) < maxDurability) {
-				experienceMean += repair * plugin.configuration.global.equipmentValues.get(type);
+				experienceMean += repair * plugin.configuration.global.equipmentValueMultipliers.get(type);
 			} else {
 				iterator.remove();
 			}
@@ -182,7 +182,7 @@ public class Listeners implements Listener {
 				playerHandler = fetchedPlayerHandler;
 			}
 
-			final double experienceMean = plugin.configuration.global.equipmentValues.get(type);
+			final double experienceMean = plugin.configuration.global.equipmentValueMultipliers.get(type);
 
 			final int experienceCeil = (int) Math.ceil(experienceMean);
 			final int experienceFloor = (int) experienceMean;

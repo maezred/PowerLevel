@@ -1,6 +1,7 @@
 package com.moltendorf.bukkit.powerlevel;
 
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 
 import java.util.*;
 
@@ -131,7 +132,136 @@ public class Configuration {
 			Material.GOLD_SWORD
 		));
 
-		final protected Map<Material, Double> equipmentValues = new HashMap<Material, Double>() {{
+		final protected Map<Integer, Integer> enchantmentCountValues = new HashMap<Integer, Integer>() {{
+			put(1, 1);
+			put(2, 3);
+			put(3, 6);
+			put(4, 10);
+			put(5, 15);
+		}};
+
+		final protected Map<Enchantment, Integer> enchantmentBaseValues = new HashMap<Enchantment, Integer>() {{
+
+			// Sword enchantments.
+
+			put(Enchantment.DAMAGE_ALL, 1);
+			put(Enchantment.DAMAGE_UNDEAD, 2);
+			put(Enchantment.DAMAGE_ARTHROPODS, 2);
+			put(Enchantment.KNOCKBACK, 2);
+			put(Enchantment.FIRE_ASPECT, 4);
+			put(Enchantment.LOOT_BONUS_MOBS, 4);
+
+			// Tool enchantments.
+
+			put(Enchantment.DIG_SPEED, 1);
+			put(Enchantment.DURABILITY, 2);
+			put(Enchantment.LOOT_BONUS_BLOCKS, 4);
+			put(Enchantment.SILK_TOUCH, 8);
+
+			// Armor enchantments.
+
+			put(Enchantment.PROTECTION_ENVIRONMENTAL, 1);
+			put(Enchantment.PROTECTION_FIRE, 2);
+			put(Enchantment.PROTECTION_PROJECTILE, 2);
+			put(Enchantment.PROTECTION_FALL, 2);
+			put(Enchantment.PROTECTION_EXPLOSIONS, 4);
+			put(Enchantment.OXYGEN, 4);
+			put(Enchantment.WATER_WORKER, 4);
+			put(Enchantment.THORNS, 8);
+
+			// Bow enchantments.
+
+			put(Enchantment.ARROW_DAMAGE, 1);
+			put(Enchantment.ARROW_KNOCKBACK, 4);
+			put(Enchantment.ARROW_FIRE, 4);
+			put(Enchantment.ARROW_INFINITE, 8);
+		}};
+
+		final protected Map<Material, Integer> equipmentBaseValues = new HashMap<Material, Integer>() {{
+			// Diamond tools.
+
+			put(Material.DIAMOND_AXE, 12);
+			put(Material.DIAMOND_PICKAXE, 12);
+			put(Material.DIAMOND_SPADE, 12);
+			put(Material.DIAMOND_SWORD, 12);
+			put(Material.DIAMOND_HOE, 12);
+
+			// Iron tools.
+
+			put(Material.IRON_AXE, 4);
+			put(Material.IRON_PICKAXE, 4);
+			put(Material.IRON_SPADE, 4);
+			put(Material.IRON_SWORD, 4);
+			put(Material.IRON_HOE, 4);
+
+			// Stone tools.
+
+			put(Material.STONE_AXE, 4);
+			put(Material.STONE_PICKAXE, 4);
+			put(Material.STONE_SPADE, 4);
+			put(Material.STONE_SWORD, 4);
+			put(Material.STONE_HOE, 4);
+
+			// Wood tools.
+
+			put(Material.WOOD_AXE, 4);
+			put(Material.WOOD_PICKAXE, 4);
+			put(Material.WOOD_SPADE, 4);
+			put(Material.WOOD_SWORD, 4);
+			put(Material.WOOD_HOE, 4);
+
+			// Gold tools.
+
+			put(Material.GOLD_AXE, 4);
+			put(Material.GOLD_PICKAXE, 4);
+			put(Material.GOLD_SPADE, 4);
+			put(Material.GOLD_SWORD, 4);
+			put(Material.GOLD_HOE, 4);
+
+			// Diamond armor.
+
+			put(Material.DIAMOND_HELMET, 12);
+			put(Material.DIAMOND_CHESTPLATE, 12);
+			put(Material.DIAMOND_LEGGINGS, 12);
+			put(Material.DIAMOND_BOOTS, 12);
+
+			// Iron armor.
+
+			put(Material.IRON_HELMET, 4);
+			put(Material.IRON_CHESTPLATE, 4);
+			put(Material.IRON_LEGGINGS, 4);
+			put(Material.IRON_BOOTS, 4);
+
+			// Chainmail armor.
+
+			put(Material.CHAINMAIL_HELMET, 4);
+			put(Material.CHAINMAIL_CHESTPLATE, 4);
+			put(Material.CHAINMAIL_LEGGINGS, 4);
+			put(Material.CHAINMAIL_BOOTS, 4);
+
+			// Gold armor.
+
+			put(Material.GOLD_HELMET, 4);
+			put(Material.GOLD_CHESTPLATE, 4);
+			put(Material.GOLD_LEGGINGS, 4);
+			put(Material.GOLD_BOOTS, 4);
+
+			// Leather armor.
+
+			put(Material.LEATHER_HELMET, 4);
+			put(Material.LEATHER_CHESTPLATE, 4);
+			put(Material.LEATHER_LEGGINGS, 4);
+			put(Material.LEATHER_BOOTS, 4);
+
+			// Special.
+
+			put(Material.BOW, 4);
+			put(Material.SHEARS, 4);
+			put(Material.FISHING_ROD, 4);
+			put(Material.FLINT_AND_STEEL, 4);
+		}};
+
+		final protected Map<Material, Double> equipmentValueMultipliers = new HashMap<Material, Double>() {{
 			final double b = .8; // Base cost modifier.
 			final double d = .1875; // Additional discount.
 
