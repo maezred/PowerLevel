@@ -313,7 +313,7 @@ public class Configuration {
 
 			// Iron tools.
 
-			final double itx = x / dtd * (d * (itd - gtd) / (dtd - gtd) + m);
+			final double itx = x / dtd * (d * (itd - gtd) / (itd - gtd) + m);
 
 			put(Material.IRON_AXE, itx);
 			put(Material.IRON_PICKAXE, itx);
@@ -323,7 +323,7 @@ public class Configuration {
 
 			// Stone tools.
 
-			final double stx = x / dtd * (d * (std - gtd) / (dtd - gtd) + m);
+			final double stx = x / dtd * (d * (std - gtd) / (itd - gtd) + m);
 
 			put(Material.STONE_AXE, stx);
 			put(Material.STONE_PICKAXE, stx);
@@ -333,7 +333,7 @@ public class Configuration {
 
 			// Wood tools.
 
-			final double wtx = x / dtd * (d * (wtd - gtd) / (dtd - gtd) + m);
+			final double wtx = x / dtd * (d * (wtd - gtd) / (itd - gtd) + m);
 
 			put(Material.WOOD_AXE, wtx);
 			put(Material.WOOD_PICKAXE, wtx);
@@ -360,24 +360,24 @@ public class Configuration {
 
 			// Iron armor.
 
-			put(Material.IRON_HELMET, x / dhd * (d * (ihd - lhd) / (dhd - lhd) + m));
-			put(Material.IRON_CHESTPLATE, x / dcd * (d * (icd - lcd) / (dcd - lcd) + m));
-			put(Material.IRON_LEGGINGS, x / dld * (d * (ild - lld) / (dld - lld) + m));
-			put(Material.IRON_BOOTS, x / dbd * (d * (ibd - lbd) / (dbd - lbd) + m));
+			put(Material.IRON_HELMET, x / dhd * (d * (ihd - lhd) / (ihd - lhd) + m));
+			put(Material.IRON_CHESTPLATE, x / dcd * (d * (icd - lcd) / (icd - lcd) + m));
+			put(Material.IRON_LEGGINGS, x / dld * (d * (ild - lld) / (ild - lld) + m));
+			put(Material.IRON_BOOTS, x / dbd * (d * (ibd - lbd) / (ibd - lbd) + m));
 
 			// Chainmail armor.
 
-			put(Material.CHAINMAIL_HELMET, x / dhd * (d * (chd - lhd) / (dhd - lhd) + m));
-			put(Material.CHAINMAIL_CHESTPLATE, x / dcd * (d * (ccd - lcd) / (dcd - lcd) + m));
-			put(Material.CHAINMAIL_LEGGINGS, x / dld * (d * (cld - lld) / (dld - lld) + m));
-			put(Material.CHAINMAIL_BOOTS, x / dbd * (d * (cbd - lbd) / (dbd - lbd) + m));
+			put(Material.CHAINMAIL_HELMET, x / dhd * (d * (chd - lhd) / (ihd - lhd) + m));
+			put(Material.CHAINMAIL_CHESTPLATE, x / dcd * (d * (ccd - lcd) / (icd - lcd) + m));
+			put(Material.CHAINMAIL_LEGGINGS, x / dld * (d * (cld - lld) / (ild - lld) + m));
+			put(Material.CHAINMAIL_BOOTS, x / dbd * (d * (cbd - lbd) / (ibd - lbd) + m));
 
 			// Gold armor.
 
-			put(Material.GOLD_HELMET, x / dhd * (d * (ghd - lhd) / (dhd - lhd) + m));
-			put(Material.GOLD_CHESTPLATE, x / dcd * (d * (gcd - lcd) / (dcd - lcd) + m));
-			put(Material.GOLD_LEGGINGS, x / dld * (d * (gld - lld) / (dld - lld) + m));
-			put(Material.GOLD_BOOTS, x / dbd * (d * (gbd - lbd) / (dbd - lbd) + m));
+			put(Material.GOLD_HELMET, x / dhd * (d * (ghd - lhd) / (ihd - lhd) + m));
+			put(Material.GOLD_CHESTPLATE, x / dcd * (d * (gcd - lcd) / (icd - lcd) + m));
+			put(Material.GOLD_LEGGINGS, x / dld * (d * (gld - lld) / (ild - lld) + m));
+			put(Material.GOLD_BOOTS, x / dbd * (d * (gbd - lbd) / (ibd - lbd) + m));
 
 			// Leather armor.
 
