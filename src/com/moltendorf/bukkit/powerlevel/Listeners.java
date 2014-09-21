@@ -115,7 +115,34 @@ public class Listeners implements Listener {
 			}
 
 			if ((maxDurability - durability + repair) < maxDurability) {
-				experienceMean += repair * plugin.configuration.global.equipmentValueMultipliers.get(type);
+				final Double experienceDenominator = plugin.configuration.global.equipmentValueMultipliers.get(type);
+
+				if (experienceDenominator == null) {
+					// We can't repair this tool.
+					return;
+				}
+
+				final Map<Enchantment, Integer> enchantments = item.getEnchantments();
+
+				final Integer countCost = plugin.configuration.global.enchantmentCountValues.get(enchantments.size());
+
+				if (countCost == null) {
+					// We can't repair this tool.
+					return;
+				}
+
+				int levelCost = countCost;
+
+				for (Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
+					final Integer baseCost = plugin.configuration.global.enchantmentBaseValues.get(entry.getKey());
+
+					// Free discount if Bukkit or PowerLevel isn't up to date.
+					if (baseCost != null) {
+						levelCost += baseCost * entry.getValue();
+					}
+				}
+
+				experienceMean += repair * playerHandler.xp.getXpForLevel(levelCost) / experienceDenominator;
 			} else {
 				iterator.remove();
 			}
@@ -182,7 +209,34 @@ public class Listeners implements Listener {
 				playerHandler = fetchedPlayerHandler;
 			}
 
-			final double experienceMean = plugin.configuration.global.equipmentValueMultipliers.get(type);
+			final Double experienceDenominator = plugin.configuration.global.equipmentValueMultipliers.get(type);
+
+			if (experienceDenominator == null) {
+				// We can't repair this tool.
+				return;
+			}
+
+			final Map<Enchantment, Integer> enchantments = item.getEnchantments();
+
+			final Integer countCost = plugin.configuration.global.enchantmentCountValues.get(enchantments.size());
+
+			if (countCost == null) {
+				// We can't repair this tool.
+				return;
+			}
+
+			int levelCost = countCost;
+
+			for (Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
+				final Integer baseCost = plugin.configuration.global.enchantmentBaseValues.get(entry.getKey());
+
+				// Free discount if Bukkit or PowerLevel isn't up to date.
+				if (baseCost != null) {
+					levelCost += baseCost * entry.getValue();
+				}
+			}
+
+			final double experienceMean = playerHandler.xp.getXpForLevel(levelCost) / experienceDenominator;
 
 			final int experienceCeil = (int) Math.ceil(experienceMean);
 			final int experienceFloor = (int) experienceMean;

@@ -265,8 +265,6 @@ public class Configuration {
 			final double b = .8; // Base cost modifier.
 			final double d = .1875; // Additional discount.
 
-			final double x = 1395; // Experience for repairs to full durability.
-
 			final double dtd = 1562; // Diamond tool durability: 1562.
 			final double itd = 251; // Iron tool durability: 251.
 			final double std = 132; // Stone tool durability: 132.
@@ -303,7 +301,7 @@ public class Configuration {
 
 			// Diamond tools.
 
-			final double dtx = x / dtd * b;
+			final double dtx = dtd / b;
 
 			put(Material.DIAMOND_AXE, dtx);
 			put(Material.DIAMOND_PICKAXE, dtx);
@@ -313,7 +311,7 @@ public class Configuration {
 
 			// Iron tools.
 
-			final double itx = x / dtd * (d * (itd - gtd) / (itd - gtd) + m);
+			final double itx = dtd / (d * (itd - gtd) / (itd - gtd) + m);
 
 			put(Material.IRON_AXE, itx);
 			put(Material.IRON_PICKAXE, itx);
@@ -323,7 +321,7 @@ public class Configuration {
 
 			// Stone tools.
 
-			final double stx = x / dtd * (d * (std - gtd) / (itd - gtd) + m);
+			final double stx = dtd / (d * (std - gtd) / (itd - gtd) + m);
 
 			put(Material.STONE_AXE, stx);
 			put(Material.STONE_PICKAXE, stx);
@@ -333,7 +331,7 @@ public class Configuration {
 
 			// Wood tools.
 
-			final double wtx = x / dtd * (d * (wtd - gtd) / (itd - gtd) + m);
+			final double wtx = dtd / (d * (wtd - gtd) / (itd - gtd) + m);
 
 			put(Material.WOOD_AXE, wtx);
 			put(Material.WOOD_PICKAXE, wtx);
@@ -343,7 +341,7 @@ public class Configuration {
 
 			// Gold tools.
 
-			final double gtx = x / dtd * m;
+			final double gtx = dtd / m;
 
 			put(Material.GOLD_AXE, gtx);
 			put(Material.GOLD_PICKAXE, gtx);
@@ -353,45 +351,45 @@ public class Configuration {
 
 			// Diamond armor.
 
-			put(Material.DIAMOND_HELMET, x / dhd * b);
-			put(Material.DIAMOND_CHESTPLATE, x / dcd * b);
-			put(Material.DIAMOND_LEGGINGS, x / dld * b);
-			put(Material.DIAMOND_BOOTS, x / dbd * b);
+			put(Material.DIAMOND_HELMET, dhd / b);
+			put(Material.DIAMOND_CHESTPLATE, dcd / b);
+			put(Material.DIAMOND_LEGGINGS, dld / b);
+			put(Material.DIAMOND_BOOTS, dbd / b);
 
 			// Iron armor.
 
-			put(Material.IRON_HELMET, x / dhd * (d * (ihd - lhd) / (ihd - lhd) + m));
-			put(Material.IRON_CHESTPLATE, x / dcd * (d * (icd - lcd) / (icd - lcd) + m));
-			put(Material.IRON_LEGGINGS, x / dld * (d * (ild - lld) / (ild - lld) + m));
-			put(Material.IRON_BOOTS, x / dbd * (d * (ibd - lbd) / (ibd - lbd) + m));
+			put(Material.IRON_HELMET, dhd / (d * (ihd - lhd) / (ihd - lhd) + m));
+			put(Material.IRON_CHESTPLATE, dcd / (d * (icd - lcd) / (icd - lcd) + m));
+			put(Material.IRON_LEGGINGS, dld / (d * (ild - lld) / (ild - lld) + m));
+			put(Material.IRON_BOOTS, dbd / (d * (ibd - lbd) / (ibd - lbd) + m));
 
 			// Chainmail armor.
 
-			put(Material.CHAINMAIL_HELMET, x / dhd * (d * (chd - lhd) / (ihd - lhd) + m));
-			put(Material.CHAINMAIL_CHESTPLATE, x / dcd * (d * (ccd - lcd) / (icd - lcd) + m));
-			put(Material.CHAINMAIL_LEGGINGS, x / dld * (d * (cld - lld) / (ild - lld) + m));
-			put(Material.CHAINMAIL_BOOTS, x / dbd * (d * (cbd - lbd) / (ibd - lbd) + m));
+			put(Material.CHAINMAIL_HELMET, dhd / (d * (chd - lhd) / (ihd - lhd) + m));
+			put(Material.CHAINMAIL_CHESTPLATE, dcd / (d * (ccd - lcd) / (icd - lcd) + m));
+			put(Material.CHAINMAIL_LEGGINGS, dld / (d * (cld - lld) / (ild - lld) + m));
+			put(Material.CHAINMAIL_BOOTS, dbd / (d * (cbd - lbd) / (ibd - lbd) + m));
 
 			// Gold armor.
 
-			put(Material.GOLD_HELMET, x / dhd * (d * (ghd - lhd) / (ihd - lhd) + m));
-			put(Material.GOLD_CHESTPLATE, x / dcd * (d * (gcd - lcd) / (icd - lcd) + m));
-			put(Material.GOLD_LEGGINGS, x / dld * (d * (gld - lld) / (ild - lld) + m));
-			put(Material.GOLD_BOOTS, x / dbd * (d * (gbd - lbd) / (ibd - lbd) + m));
+			put(Material.GOLD_HELMET, dhd / (d * (ghd - lhd) / (ihd - lhd) + m));
+			put(Material.GOLD_CHESTPLATE, dcd / (d * (gcd - lcd) / (icd - lcd) + m));
+			put(Material.GOLD_LEGGINGS, dld / (d * (gld - lld) / (ild - lld) + m));
+			put(Material.GOLD_BOOTS, dbd / (d * (gbd - lbd) / (ibd - lbd) + m));
 
 			// Leather armor.
 
-			put(Material.LEATHER_HELMET, x / dhd * m);
-			put(Material.LEATHER_CHESTPLATE, x / dcd * m);
-			put(Material.LEATHER_LEGGINGS, x / dld * m);
-			put(Material.LEATHER_BOOTS, x / dbd * m);
+			put(Material.LEATHER_HELMET, dhd / m);
+			put(Material.LEATHER_CHESTPLATE, dcd / m);
+			put(Material.LEATHER_LEGGINGS, dld / m);
+			put(Material.LEATHER_BOOTS, dbd / m);
 
 			// Special.
 
-			put(Material.BOW, x / bd * b);
-			put(Material.SHEARS, x / sd * b);
-			put(Material.FISHING_ROD, x / frd * b);
-			put(Material.FLINT_AND_STEEL, x / fsd * b);
+			put(Material.BOW, bd / b);
+			put(Material.SHEARS, sd / b);
+			put(Material.FISHING_ROD, frd / b);
+			put(Material.FLINT_AND_STEEL, fsd / b);
 		}};
 	}
 
