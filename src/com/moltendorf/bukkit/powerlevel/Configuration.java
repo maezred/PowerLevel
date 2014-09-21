@@ -132,7 +132,8 @@ public class Configuration {
 		));
 
 		final protected Map<Material, Double> equipmentValues = new HashMap<Material, Double>() {{
-			final double d = .15; // Discount.
+			final double b = .8; // Base cost modifier.
+			final double d = .1875; // Additional discount.
 
 			final double x = 1395; // Experience for repairs to full durability.
 
@@ -168,11 +169,11 @@ public class Configuration {
 			final double frd = 65; // Fishing rod durability: 65.
 			final double fsd = 65; // Flint and steel durability: 65.
 
-			final double m = 1 - d; // Discount base value.
+			final double m = b - d; // Discount base value.
 
 			// Diamond tools.
 
-			final double dtx = x / dtd;
+			final double dtx = x / dtd * b;
 
 			put(Material.DIAMOND_AXE, dtx);
 			put(Material.DIAMOND_PICKAXE, dtx);
@@ -222,10 +223,10 @@ public class Configuration {
 
 			// Diamond armor.
 
-			put(Material.DIAMOND_HELMET, x / dhd);
-			put(Material.DIAMOND_CHESTPLATE, x / dcd);
-			put(Material.DIAMOND_LEGGINGS, x / dld);
-			put(Material.DIAMOND_BOOTS, x / dbd);
+			put(Material.DIAMOND_HELMET, x / dhd * b);
+			put(Material.DIAMOND_CHESTPLATE, x / dcd * b);
+			put(Material.DIAMOND_LEGGINGS, x / dld * b);
+			put(Material.DIAMOND_BOOTS, x / dbd * b);
 
 			// Iron armor.
 
@@ -257,10 +258,10 @@ public class Configuration {
 
 			// Special.
 
-			put(Material.BOW, x / bd);
-			put(Material.SHEARS, x / sd);
-			put(Material.FISHING_ROD, x / frd);
-			put(Material.FLINT_AND_STEEL, x / fsd);
+			put(Material.BOW, x / bd * b);
+			put(Material.SHEARS, x / sd * b);
+			put(Material.FISHING_ROD, x / frd * b);
+			put(Material.FLINT_AND_STEEL, x / fsd * b);
 		}};
 	}
 
