@@ -311,7 +311,7 @@ public class Configuration {
 
 			// Iron tools.
 
-			final double itx = dtd / (d * (itd - gtd) / (itd - gtd) + m);
+			final double itx = dtd / b;
 
 			put(Material.IRON_AXE, itx);
 			put(Material.IRON_PICKAXE, itx);
@@ -358,10 +358,10 @@ public class Configuration {
 
 			// Iron armor.
 
-			put(Material.IRON_HELMET, dhd / (d * (ihd - lhd) / (ihd - lhd) + m));
-			put(Material.IRON_CHESTPLATE, dcd / (d * (icd - lcd) / (icd - lcd) + m));
-			put(Material.IRON_LEGGINGS, dld / (d * (ild - lld) / (ild - lld) + m));
-			put(Material.IRON_BOOTS, dbd / (d * (ibd - lbd) / (ibd - lbd) + m));
+			put(Material.IRON_HELMET, dhd / b);
+			put(Material.IRON_CHESTPLATE, dcd / b);
+			put(Material.IRON_LEGGINGS, dld / b);
+			put(Material.IRON_BOOTS, dbd / b);
 
 			// Chainmail armor.
 
