@@ -268,11 +268,9 @@ public class Listeners implements Listener {
 			ItemStack item = player.getItemInHand();
 			Material type = item.getType();
 
-			if (!plugin.configuration.global.weaponEquipment.contains(type)) {
-				return;
+			if (plugin.configuration.global.weaponEquipment.contains(type)) {
+				repairTool(player, item, type);
 			}
-
-			repairTool(player, item, type);
 		}
 
 		if (event.getEntityType() == EntityType.PLAYER) {
