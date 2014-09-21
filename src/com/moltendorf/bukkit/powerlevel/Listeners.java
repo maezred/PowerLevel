@@ -124,6 +124,13 @@ public class Listeners implements Listener {
 
 				final Map<Enchantment, Integer> enchantments = item.getEnchantments();
 
+				final Integer baseCost = plugin.configuration.global.equipmentBaseValues.get(type);
+
+				if (baseCost == null) {
+					// We can't repair this tool.
+					return;
+				}
+
 				final Integer countCost = plugin.configuration.global.enchantmentCountValues.get(enchantments.size());
 
 				if (countCost == null) {
@@ -131,14 +138,14 @@ public class Listeners implements Listener {
 					return;
 				}
 
-				int levelCost = countCost;
+				int levelCost = baseCost + countCost;
 
 				for (Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
-					final Integer baseCost = plugin.configuration.global.enchantmentBaseValues.get(entry.getKey());
+					final Integer cost = plugin.configuration.global.enchantmentBaseValues.get(entry.getKey());
 
 					// Free discount if Bukkit or PowerLevel isn't up to date.
-					if (baseCost != null) {
-						levelCost += baseCost * entry.getValue();
+					if (cost != null) {
+						levelCost += cost * entry.getValue();
 					}
 				}
 
@@ -218,6 +225,13 @@ public class Listeners implements Listener {
 
 			final Map<Enchantment, Integer> enchantments = item.getEnchantments();
 
+			final Integer baseCost = plugin.configuration.global.equipmentBaseValues.get(type);
+
+			if (baseCost == null) {
+				// We can't repair this tool.
+				return;
+			}
+
 			final Integer countCost = plugin.configuration.global.enchantmentCountValues.get(enchantments.size());
 
 			if (countCost == null) {
@@ -225,14 +239,14 @@ public class Listeners implements Listener {
 				return;
 			}
 
-			int levelCost = countCost;
+			int levelCost = baseCost + countCost;
 
 			for (Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
-				final Integer baseCost = plugin.configuration.global.enchantmentBaseValues.get(entry.getKey());
+				final Integer cost = plugin.configuration.global.enchantmentBaseValues.get(entry.getKey());
 
 				// Free discount if Bukkit or PowerLevel isn't up to date.
-				if (baseCost != null) {
-					levelCost += baseCost * entry.getValue();
+				if (cost != null) {
+					levelCost += cost * entry.getValue();
 				}
 			}
 
