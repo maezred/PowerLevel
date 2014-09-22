@@ -119,7 +119,9 @@ public class Listeners implements Listener {
 
 				if (experienceDenominator == null) {
 					// We can't repair this tool.
-					return;
+					iterator.remove();
+
+					continue;
 				}
 
 				final Map<Enchantment, Integer> enchantments = item.getEnchantments();
@@ -128,14 +130,18 @@ public class Listeners implements Listener {
 
 				if (baseCost == null) {
 					// We can't repair this tool.
-					return;
+					iterator.remove();
+
+					continue;
 				}
 
 				final Integer countCost = plugin.configuration.global.enchantmentCountValues.get(enchantments.size());
 
 				if (countCost == null) {
 					// We can't repair this tool.
-					return;
+					iterator.remove();
+
+					continue;
 				}
 
 				int levelCost = baseCost + countCost;
