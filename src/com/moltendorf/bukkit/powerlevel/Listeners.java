@@ -124,8 +124,6 @@ public class Listeners implements Listener {
 					continue;
 				}
 
-				final Map<Enchantment, Integer> enchantments = item.getEnchantments();
-
 				final Integer baseCost = plugin.configuration.global.equipmentBaseValues.get(type);
 
 				if (baseCost == null) {
@@ -134,6 +132,8 @@ public class Listeners implements Listener {
 
 					continue;
 				}
+
+				final Map<Enchantment, Integer> enchantments = item.getEnchantments();
 
 				final Integer countCost = plugin.configuration.global.enchantmentCountValues.get(enchantments.size());
 
@@ -183,6 +183,8 @@ public class Listeners implements Listener {
 
 			playerHandler.xp.changeExp(experienceChange);
 
+			player.sendMessage("Repaired " + equipment.size() + " durability for " + (-experienceChange) + " experience.");
+
 			// Repair all damaged equipment.
 			for (ItemStack item : equipment) {
 				final int repair;
@@ -229,14 +231,14 @@ public class Listeners implements Listener {
 				return;
 			}
 
-			final Map<Enchantment, Integer> enchantments = item.getEnchantments();
-
 			final Integer baseCost = plugin.configuration.global.equipmentBaseValues.get(type);
 
 			if (baseCost == null) {
 				// We can't repair this tool.
 				return;
 			}
+
+			final Map<Enchantment, Integer> enchantments = item.getEnchantments();
 
 			final Integer countCost = plugin.configuration.global.enchantmentCountValues.get(enchantments.size());
 
