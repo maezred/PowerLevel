@@ -127,7 +127,7 @@ public class Listeners implements Listener {
 
 					final short durability = item.getDurability();
 
-					if (durability > 0) {
+					if (durability > 1) {
 						if (durability <= state.durability) {
 							// If equal then remove, but if it's less than, then: W.T.F.? Hacks? But still remove.
 							lookup.remove(type);
