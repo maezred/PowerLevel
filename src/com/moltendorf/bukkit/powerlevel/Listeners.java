@@ -233,20 +233,20 @@ public class Listeners implements Listener {
 						experienceChange = 0 - experienceCeil;
 					}
 
-					player.sendMessage("Restored " + totalDurability + " durability for " + (-experienceChange) + " experience.");
+					//player.sendMessage("Restored " + totalDurability + " durability for " + (-experienceChange) + " experience.");
 
 					playerHandler.xp.changeExp(experienceChange);
 
-					String message = "";
+					//String message = "";
 
 					// Repair all damaged equipment.
 					for (ItemState state : lookup.values()) {
-						message += " (" + (state.type.getMaxDurability() - state.durability) + "/" + state.type.getMaxDurability() + ")";
+						//message += " (" + (state.type.getMaxDurability() - state.durability) + "/" + state.type.getMaxDurability() + ")";
 
 						state.item.setDurability(state.durability);
 					}
 
-					player.sendMessage(message);
+					//player.sendMessage(message);
 				}
 			}
 		};
@@ -370,12 +370,12 @@ public class Listeners implements Listener {
 							experienceChange = 0 - experienceCeil;
 						}
 
-						player.sendMessage("Restored " + repair + " durability for " + (-experienceChange) + " experience.");
+						//player.sendMessage("Restored " + repair + " durability for " + (-experienceChange) + " experience.");
 
 						playerHandler.xp.changeExp(experienceChange);
 						item.setDurability(state.durability);
 
-						player.sendMessage(" (" + (state.type.getMaxDurability() - state.durability) + "/" + state.type.getMaxDurability() + ")");
+						//player.sendMessage(" (" + (state.type.getMaxDurability() - state.durability) + "/" + state.type.getMaxDurability() + ")");
 					}
 				}
 			}
