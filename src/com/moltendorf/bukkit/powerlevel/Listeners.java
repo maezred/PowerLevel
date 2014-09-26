@@ -250,78 +250,123 @@ public class Listeners implements Listener {
 			return;
 		}
 
-		short durability = item.getDurability();
-		short maxDurability = type.getMaxDurability();
+		final ItemState state = new ItemState(item);
 
-		// +1 to avoid flickering health bar on tool.
-		if ((maxDurability - durability + 1) < maxDurability) {
-			final UUID id = player.getUniqueId();
+		final Runnable runnable = new Runnable() {
+			@Override
+			public void run() {
+				final ItemStack item = player.getItemInHand();
 
-			final PlayerHandler playerHandler;
-			PlayerHandler fetchedPlayerHandler = players.get(id);
-
-			// This should never happen.
-			if (fetchedPlayerHandler == null) {
-				playerHandler = new PlayerHandler(player);
-				players.put(id, playerHandler);
-			} else {
-				playerHandler = fetchedPlayerHandler;
-			}
-
-			final Double experienceDenominator = plugin.configuration.global.equipmentValueMultipliers.get(type);
-
-			if (experienceDenominator == null) {
-				// We can't repair this tool.
-				return;
-			}
-
-			final Integer baseCost = plugin.configuration.global.equipmentBaseValues.get(type);
-
-			if (baseCost == null) {
-				// We can't repair this tool.
-				return;
-			}
-
-			final Map<Enchantment, Integer> enchantments = item.getEnchantments();
-
-			final Integer countCost = plugin.configuration.global.enchantmentCountValues.get(enchantments.size());
-
-			if (countCost == null) {
-				// We can't repair this tool.
-				return;
-			}
-
-			int levelCost = baseCost + countCost;
-
-			for (Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
-				final Integer cost = plugin.configuration.global.enchantmentBaseValues.get(entry.getKey());
-
-				// Free discount if Bukkit or PowerLevel isn't up to date.
-				if (cost != null) {
-					levelCost += cost * entry.getValue();
-				}
-			}
-
-			final double experienceMean = playerHandler.xp.getXpForLevel(levelCost) / experienceDenominator;
-
-			final int experienceCeil = (int) Math.ceil(experienceMean);
-			final int experienceFloor = (int) experienceMean;
-
-			final int currentExperience = playerHandler.xp.getCurrentExp();
-
-			if (currentExperience - experienceCeil >= plugin.configuration.global.repairExperience) {
-				final int experienceChange;
-
-				if (Math.random() > experienceMean - experienceFloor) {
-					experienceChange = 0 - experienceFloor;
-				} else {
-					experienceChange = 0 - experienceCeil;
+				if (!state.update(item)) {
+					return;
 				}
 
-				playerHandler.xp.changeExp(experienceChange);
-				item.setDurability((short) (durability - 1));
+				final short durability = item.getDurability();
+
+				// +1 to avoid flickering health bar on tool.
+				if (durability > 1) {
+					if (durability <= state.durability) {
+						// If equal then remove, but if it's less than, then: W.T.F.? Hacks? But still remove.
+						return;
+					}
+
+					final int difference;
+
+					if (state.durability > 0) {
+						difference = durability - state.durability;
+					} else {
+						// Minus 1 to preserve the health bar.
+						difference = durability - 1;
+					}
+
+					if (difference > 3) {
+
+						// W.T.F.? Hacks?
+						return;
+					}
+
+					final UUID id = player.getUniqueId();
+
+					final PlayerHandler playerHandler;
+					PlayerHandler fetchedPlayerHandler = players.get(id);
+
+					// This should never happen.
+					if (fetchedPlayerHandler == null) {
+						playerHandler = new PlayerHandler(player);
+						players.put(id, playerHandler);
+					} else {
+						playerHandler = fetchedPlayerHandler;
+					}
+
+					final Double experienceDenominator = plugin.configuration.global.equipmentValueMultipliers.get(type);
+
+					if (experienceDenominator == null) {
+						// We can't repair this tool.
+						return;
+					}
+
+					final Integer baseCost = plugin.configuration.global.equipmentBaseValues.get(type);
+
+					if (baseCost == null) {
+						// We can't repair this tool.
+						return;
+					}
+
+					final Map<Enchantment, Integer> enchantments = item.getEnchantments();
+
+					final Integer countCost = plugin.configuration.global.enchantmentCountValues.get(enchantments.size());
+
+					if (countCost == null) {
+						// We can't repair this tool.
+						return;
+					}
+
+					int levelCost = baseCost + countCost;
+
+					for (Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
+						final Integer cost = plugin.configuration.global.enchantmentBaseValues.get(entry.getKey());
+
+						// Free discount if Bukkit or PowerLevel isn't up to date.
+						if (cost != null) {
+							levelCost += cost * entry.getValue();
+						}
+					}
+
+					final int repair;
+
+					// 5% roll for +1.
+					if (state.durability > 1 && Math.random() < .05) {
+						repair = difference + 1;
+
+						state.durability -= 1;
+					} else {
+						repair = difference;
+					}
+
+					final double experienceMean = repair * playerHandler.xp.getXpForLevel(levelCost) / experienceDenominator;
+
+					final int experienceCeil = (int) Math.ceil(experienceMean);
+					final int experienceFloor = (int) experienceMean;
+
+					final int currentExperience = playerHandler.xp.getCurrentExp();
+
+					if (currentExperience - experienceCeil >= plugin.configuration.global.repairExperience) {
+						final int experienceChange;
+
+						if (Math.random() > experienceMean - experienceFloor) {
+							experienceChange = 0 - experienceFloor;
+						} else {
+							experienceChange = 0 - experienceCeil;
+						}
+
+						playerHandler.xp.changeExp(experienceChange);
+						item.setDurability(state.durability);
+					}
+				}
 			}
-		}
+		};
+
+		plugin.getServer().getScheduler().runTask(plugin, runnable);
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
