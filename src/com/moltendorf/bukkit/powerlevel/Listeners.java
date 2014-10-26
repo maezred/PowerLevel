@@ -246,6 +246,16 @@ public class Listeners implements Listener {
 						state.item.setDurability(state.durability);
 					}
 
+					if (lookup.size() > 0) {
+						if (playerHandler.durabilityChanges >= 8) {
+							playerHandler.durabilityChanges = 1;
+
+							player.updateInventory();
+						} else {
+							playerHandler.durabilityChanges++;
+						}
+					}
+
 					//player.sendMessage(message);
 				}
 			}
@@ -374,6 +384,14 @@ public class Listeners implements Listener {
 
 						playerHandler.xp.changeExp(experienceChange);
 						item.setDurability(state.durability);
+
+						if (playerHandler.durabilityChanges >= 8) {
+							playerHandler.durabilityChanges = 1;
+
+							player.updateInventory();
+						} else {
+							playerHandler.durabilityChanges++;
+						}
 
 						//player.sendMessage(" (" + (state.type.getMaxDurability() - state.durability) + "/" + state.type.getMaxDurability() + ")");
 					}

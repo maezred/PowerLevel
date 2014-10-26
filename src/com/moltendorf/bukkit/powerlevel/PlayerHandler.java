@@ -15,6 +15,8 @@ public class PlayerHandler {
 
 	protected ExperienceManager xp;
 
+	protected int durabilityChanges = 0;
+
 	private Set<PotionEffectType> currentEffects = new LinkedHashSet<>(3);
 	private Set<PotionEffect> currentPotions = new LinkedHashSet<>(3);
 
