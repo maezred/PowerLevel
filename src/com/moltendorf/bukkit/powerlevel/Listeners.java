@@ -5,6 +5,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Cancellable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -70,7 +71,7 @@ public class Listeners implements Listener {
 		playerHandler.refreshEffects();
 	}
 
-	public void repairArmor(final Player player) {
+	public void repairArmor(final Player player, final Cancellable event) {
 		final List<ItemStack> equipment = new LinkedList<>(Arrays.asList(player.getEquipment().getArmorContents()));
 		final Map<Material, ItemState> lookup = new LinkedHashMap<>();
 
@@ -86,7 +87,23 @@ public class Listeners implements Listener {
 				continue;
 			}
 
-			lookup.put(type, new ItemState(item));
+			if (item.getDurability() > item.getType().getMaxDurability() - 12) {
+				// Free durability!
+				item.setDurability((short) (item.getType().getMaxDurability() - 12));
+
+				player.updateInventory();
+				event.setCancelled(true);
+
+				continue;
+			}
+
+			if (!event.isCancelled()) {
+				lookup.put(type, new ItemState(item));
+			}
+		}
+
+		if (event.isCancelled()) {
+			return;
 		}
 
 		final Runnable runnable = new Runnable() {
@@ -264,9 +281,19 @@ public class Listeners implements Listener {
 		plugin.getServer().getScheduler().runTask(plugin, runnable);
 	}
 
-	public void repairTool(final Player player, final ItemStack item, final Material type) {
+	public void repairTool(final Player player, final ItemStack item, final Material type, final Cancellable event) {
 		// Since we require Unbreaking III, we don't need to worry about updating the client's perceived durability.
 		if (item.getEnchantmentLevel(Enchantment.DURABILITY) < 3) {
+			return;
+		}
+
+		if (item.getDurability() > item.getType().getMaxDurability() - 3) {
+			// Free durability!
+			item.setDurability((short) (item.getType().getMaxDurability() - 3));
+
+			player.updateInventory();
+			event.setCancelled(true);
+
 			return;
 		}
 
@@ -423,7 +450,7 @@ public class Listeners implements Listener {
 			return;
 		}
 
-		repairTool(player, item, type);
+		repairTool(player, item, type, event);
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -447,7 +474,7 @@ public class Listeners implements Listener {
 			return;
 		}
 
-		repairTool(player, item, type);
+		repairTool(player, item, type, event);
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -467,7 +494,7 @@ public class Listeners implements Listener {
 			Material type = item.getType();
 
 			if (plugin.configuration.global.weaponEquipment.contains(type)) {
-				repairTool(player, item, type);
+				repairTool(player, item, type, event);
 			}
 		}
 	}
@@ -481,7 +508,7 @@ public class Listeners implements Listener {
 		}
 
 		if (event.getEntityType() == EntityType.PLAYER) {
-			repairArmor((Player) event.getEntity());
+			repairArmor((Player) event.getEntity(), event);
 		}
 	}
 
@@ -505,7 +532,7 @@ public class Listeners implements Listener {
 				return;
 			}
 
-			repairTool(player, item, type);
+			repairTool(player, item, type, event);
 		}
 	}
 
@@ -543,7 +570,7 @@ public class Listeners implements Listener {
 			return;
 		}
 
-		repairTool(player, item, type);
+		repairTool(player, item, type, event);
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -574,7 +601,7 @@ public class Listeners implements Listener {
 			return;
 		}
 
-		repairTool(event.getPlayer(), item, type);
+		repairTool(event.getPlayer(), item, type, event);
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -620,6 +647,6 @@ public class Listeners implements Listener {
 			return;
 		}
 
-		repairTool(player, item, type);
+		repairTool(player, item, type, event);
 	}
 }
