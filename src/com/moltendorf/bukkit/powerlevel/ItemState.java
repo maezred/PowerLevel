@@ -50,7 +50,7 @@ public class ItemState {
 		if (meta.hasDisplayName()) {
 			if (name == null) {
 				return false;
-			} else if (name.equals(meta.getDisplayName())) {
+			} else if (!name.equals(meta.getDisplayName())) {
 				return false;
 			}
 		} else if (name != null) {
@@ -64,7 +64,7 @@ public class ItemState {
 		}
 
 		for (final Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
-			if (entry.getValue().equals(currentEnchantments.get(entry.getKey()))) {
+			if (!entry.getValue().equals(currentEnchantments.get(entry.getKey()))) {
 				return false;
 			}
 		}
