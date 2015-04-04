@@ -213,8 +213,8 @@ public class Listeners implements Listener {
 
 						final int repair;
 
-						// 5% roll for +1.
-						if (state.durability > 1 && Math.random() < .05) {
+						// 1% roll for +1.
+						if (state.durability > 1 && Math.random() < .01) {
 							repair = difference + 1;
 
 							state.durability -= 1;
@@ -383,7 +383,7 @@ public class Listeners implements Listener {
 					final int repair;
 
 					// 1% roll for +1.
-					if (state.durability > 1 && Math.random()*100 < 1) {
+					if (state.durability > 1 && Math.random() < .01) {
 						repair = difference + 1;
 
 						state.durability -= 1;
