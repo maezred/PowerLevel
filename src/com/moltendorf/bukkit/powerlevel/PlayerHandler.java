@@ -49,9 +49,7 @@ public class PlayerHandler {
 
 		double health = player.getHealth();
 
-		for (PotionEffectType effect : currentEffects) {
-			player.removePotionEffect(effect);
-		}
+		currentEffects.forEach(player::removePotionEffect);
 
 		if (effectLevel != currentEffectLevel) {
 			currentPotions.clear();

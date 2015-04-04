@@ -9,6 +9,8 @@ import java.util.Map;
 
 /**
  * Created by moltendorf on 14/09/24.
+ *
+ * @author moltendorf
  */
 public class ItemState {
 	public ItemStack item;
@@ -18,9 +20,12 @@ public class ItemState {
 	public final Material type;
 
 	public short durability;
+	public int maxDifference;
 
-	public ItemState(final ItemStack input) {
+	public ItemState(final ItemStack input, final int maxDifference) {
 		item = input;
+
+		this.maxDifference = maxDifference;
 
 		type = input.getType();
 		durability = input.getDurability();
@@ -45,7 +50,7 @@ public class ItemState {
 		if (meta.hasDisplayName()) {
 			if (name == null) {
 				return false;
-			} else if (name != meta.getDisplayName()) {
+			} else if (name.equals(meta.getDisplayName())) {
 				return false;
 			}
 		} else if (name != null) {
@@ -59,7 +64,7 @@ public class ItemState {
 		}
 
 		for (final Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
-			if (entry.getValue() != currentEnchantments.get(entry.getKey())) {
+			if (entry.getValue().equals(currentEnchantments.get(entry.getKey()))) {
 				return false;
 			}
 		}
