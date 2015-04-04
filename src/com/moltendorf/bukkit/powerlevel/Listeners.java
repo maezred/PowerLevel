@@ -228,9 +228,9 @@ public class Listeners implements Listener {
 		}
 
 		final Runnable runnable = () -> {
-			final ItemStack item1 = player.getItemInHand();
+			final ItemStack currentItem = player.getItemInHand();
 
-			Double experienceMean = calculateExperience(state, item1, player, type, playerHandler);
+			Double experienceMean = calculateExperience(state, currentItem, player, type, playerHandler);
 
 			if (experienceMean == null) {
 				return;
@@ -249,7 +249,7 @@ public class Listeners implements Listener {
 			//player.sendMessage("Restored " + repair + " durability for " + (-experienceChange) + " experience.");
 
 			playerHandler.xp.changeExp(experienceChange);
-			item1.setDurability(state.durability);
+			currentItem.setDurability(state.durability);
 
 			if (playerHandler.durabilityChanges >= 8) {
 				playerHandler.durabilityChanges = 1;
@@ -293,7 +293,7 @@ public class Listeners implements Listener {
 			}
 
 			if (difference > state.maxDifference) {
-				player.sendMessage("Could not restore " + difference + " durability.");
+				player.sendMessage("§4Could not restore " + difference + " durability.");
 
 				// W.T.F.? Hacks?
 				return null;
