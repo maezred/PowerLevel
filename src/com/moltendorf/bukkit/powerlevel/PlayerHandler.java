@@ -1,5 +1,6 @@
 package com.moltendorf.bukkit.powerlevel;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -44,7 +45,7 @@ public class PlayerHandler {
 
 	public void refreshEffects() {
 		// Intentionally doing integer division.
-		int effectLevel = (player.getLevel() - 50) / 5; // Level 50 == effectLevel 0.
+		int effectLevel = (player.getLevel() - 45) / 5; // Level 50 == effectLevel 1.
 
 		double health = player.getHealth();
 
@@ -55,31 +56,99 @@ public class PlayerHandler {
 		if (effectLevel != currentEffectLevel) {
 			currentPotions.clear();
 
-			// Level 55-60 bonuses.
+			// Level 50-55 bonuses.
 			if (effectLevel >= 1) {
 				int amplifier = amplifier(effectLevel, 1, 1);
 
 				if (amplifier >= 0) {
 					currentPotions.add(new PotionEffect(PotionEffectType.JUMP, 1200, amplifier, true));
 				}
+
+				if (effectLevel > currentEffectLevel) {
+					if (currentEffectLevel < 2) {
+						player.sendMessage("§2Jump Boost " + StringUtils.repeat("I", amplifier + 1) + " synthesized.");
+					}
+				} else if (currentEffectLevel > 1 && effectLevel < 2) {
+					player.sendMessage("§4Jump Boost " + StringUtils.repeat("I", amplifier + 2) + " dispersed.");
+				}
+
+			} else if (currentEffectLevel >= 1) {
+				player.sendMessage("§4Jump Boost I dispersed.");
 			}
 
-			// Level 65-70 bonuses.
+			// Level 60-65 bonuses.
 			if (effectLevel >= 3) {
 				int amplifier = amplifier(effectLevel, 3, 1);
 
 				if (amplifier >= 0) {
 					currentPotions.add(new PotionEffect(PotionEffectType.SPEED, 1200, amplifier, true));
 				}
+
+				if (effectLevel > currentEffectLevel) {
+					if (currentEffectLevel < 4) {
+						player.sendMessage("§2Speed " + StringUtils.repeat("I", amplifier + 1) + " synthesized.");
+					}
+				} else if (currentEffectLevel > 3 && effectLevel < 4) {
+					player.sendMessage("§4Speed " + StringUtils.repeat("I", amplifier + 2) + " dispersed.");
+				}
+
+			} else if (currentEffectLevel >= 3) {
+				// currentEffectLevel assumed to be higher than 0.
+				player.sendMessage("§4Speed I dispersed.");
+			}
+
+			// Level 70+ bonus.
+			if (effectLevel >= 5) {
+				if (currentEffectLevel < 5) {
+					player.sendMessage("§2Repair synthesized.");
+				}
+			} else if (currentEffectLevel >= 5) {
+				player.sendMessage("§4Repair dispersed.");
 			}
 
 			// Level 75-95 bonuses.
-			if (effectLevel >= 5) {
-				int amplifier = amplifier(effectLevel, 5, 4);
+			if (effectLevel >= 6) {
+				int amplifier = amplifier(effectLevel, 6, 4);
 
 				if (amplifier >= 0) {
 					currentPotions.add(new PotionEffect(PotionEffectType.HEALTH_BOOST, 1200, amplifier, true));
 				}
+
+				if (effectLevel > currentEffectLevel) {
+					if (currentEffectLevel < 10) {
+						int number = amplifier + 1;
+
+						String string;
+
+						if (number > 4) {
+							string = "V";
+						} else if (number > 3) {
+							string = "IV";
+						} else {
+							string = StringUtils.repeat("I", number);
+						}
+
+						player.sendMessage("§2Health Boost " + string + " synthesized.");
+					}
+				} else if (currentEffectLevel > 6 && effectLevel < 10) {
+					int number = amplifier + 2;
+
+					String string;
+
+					if (number > 4) {
+						string = "V";
+					} else if (number > 3) {
+						string = "IV";
+					} else {
+						string = StringUtils.repeat("I", number);
+					}
+
+					player.sendMessage("§4Health Boost " + string + " dispersed.");
+				}
+
+			} else if (currentEffectLevel >= 6) {
+				// currentEffectLevel assumed to be higher than 0.
+				player.sendMessage("§4Health Boost I dispersed.");
 			}
 
 			Set<PotionEffectType> effects = new LinkedHashSet<>();
