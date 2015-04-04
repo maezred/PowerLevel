@@ -18,7 +18,7 @@ public class Configuration {
 		// Final data.
 		final protected boolean enabled = true; // Whether or not the plugin is enabled at all; interface mode.
 
-		final protected int repairExperience = 8765;
+		final protected int repairExperience = 10545; // Level 75
 
 		final protected Set<Material> armorEquipment = new HashSet<>(Arrays.asList(
 			Material.DIAMOND_HELMET,
