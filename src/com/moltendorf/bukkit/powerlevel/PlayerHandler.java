@@ -46,15 +46,13 @@ public class PlayerHandler {
 	private int amplifier(final int effectLevel, final int startingEffectLevel, final int maximumAmplifier) {
 		final int finalEffectLevel = startingEffectLevel + maximumAmplifier;
 
-		int i = startingEffectLevel;
+		int amplifier = effectLevel - startingEffectLevel;
 
-		for (; i < finalEffectLevel ; ++i) {
-			if (i >= effectLevel) {
-				break;
-			}
+		if (amplifier > maximumAmplifier) {
+			return maximumAmplifier;
+		} else {
+			return amplifier < 1 ? 0 : amplifier;
 		}
-
-		return i - startingEffectLevel;
 	}
 
 	public void changeExp(double input) {
@@ -147,10 +145,10 @@ public class PlayerHandler {
 				}
 
 				if (effectLevel > currentEffectLevel) {
-					// Add extra hearts so the player doesn't have to regenerate.
-					health += (1 + amplifier - amplifier(currentEffectLevel, 6, 4)) * 4;
-
 					if (currentEffectLevel < 10) {
+						// Add extra hearts so the player doesn't have to regenerate.
+						health += (1 + amplifier - amplifier(currentEffectLevel, 6, 4)) * 4;
+
 						int number = amplifier + 1;
 
 						String string;
@@ -166,6 +164,16 @@ public class PlayerHandler {
 						messages.addLast("§2Health Boost " + string + " synthesized.");
 					}
 				} else if (currentEffectLevel > 6 && effectLevel < 10) {
+					if (health > 12) {
+						// Remove extra hearts to prevent exploits.
+						health -= (1 + amplifier(currentEffectLevel, 6, 4) - amplifier) * 4;
+
+						// Don't freaking kill them!
+						if (health < 8) {
+							health = 8;
+						}
+					}
+
 					int number = amplifier + 2;
 
 					String string;
@@ -182,6 +190,16 @@ public class PlayerHandler {
 				}
 
 			} else if (currentEffectLevel >= 6) {
+				if (health > 8) {
+					// Remove extra hearts to prevent exploits.
+					health -= (1 + amplifier(currentEffectLevel, 6, 4)) * 4;
+
+					// Don't freaking kill them!
+					if (health < 8) {
+						health = 8;
+					}
+				}
+
 				// currentEffectLevel assumed to be higher than 0.
 				messages.addFirst("§4Health Boost I dispersed.");
 			}
