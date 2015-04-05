@@ -100,7 +100,7 @@ public class Listeners implements Listener {
 				continue;
 			}
 
-			ItemState state = new ItemState(item, 4);
+			ItemState state = new ItemState(item, 12);
 			lookup.put(type, state);
 
 			short minimumDurability = (short) (item.getType().getMaxDurability() - 24);
