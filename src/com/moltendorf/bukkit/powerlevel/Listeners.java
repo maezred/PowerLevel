@@ -56,7 +56,7 @@ public class Listeners implements Listener {
 
 		// This should never happen.
 		if (fetchedPlayerHandler == null) {
-			playerHandler = new PlayerHandler(player);
+			playerHandler = new PlayerHandler(plugin, player);
 			players.put(id, playerHandler);
 		} else {
 			playerHandler = fetchedPlayerHandler;
@@ -73,7 +73,7 @@ public class Listeners implements Listener {
 
 		// This should never happen.
 		if (fetchedPlayerHandler == null) {
-			playerHandler = new PlayerHandler(player);
+			playerHandler = new PlayerHandler(plugin, player);
 			players.put(id, playerHandler);
 		} else {
 			playerHandler = fetchedPlayerHandler;
@@ -143,46 +143,30 @@ public class Listeners implements Listener {
 				return;
 			}
 
-			final int experienceCeil = (int) Math.ceil(experienceMean);
-			final int experienceFloor = (int) experienceMean;
+			//player.sendMessage("Restored " + totalDurability + " durability for " + (-experienceChange) + " experience.");
 
-			final int currentExperience1 = playerHandler.xp.getCurrentExp();
+			playerHandler.changeExp(-experienceMean);
 
-			// Don't do anything unless the player has enough experience.
-			if (currentExperience1 - experienceCeil >= plugin.configuration.global.repairExperience) {
-				final int experienceChange;
+			//String message = "";
 
-				if (Math.random() > experienceMean - experienceFloor) {
-					experienceChange = 0 - experienceFloor;
-				} else {
-					experienceChange = 0 - experienceCeil;
-				}
+			// Repair all damaged equipment.
+			for (ItemState state : lookup.values()) {
+				//message += " (" + (state.type.getMaxDurability() - state.durability) + "/" + state.type.getMaxDurability() + ")";
 
-				//player.sendMessage("Restored " + totalDurability + " durability for " + (-experienceChange) + " experience.");
-
-				playerHandler.xp.changeExp(experienceChange);
-
-				//String message = "";
-
-				// Repair all damaged equipment.
-				for (ItemState state : lookup.values()) {
-					//message += " (" + (state.type.getMaxDurability() - state.durability) + "/" + state.type.getMaxDurability() + ")";
-
-					state.item.setDurability(state.durability);
-				}
-
-				if (lookup.size() > 0) {
-					if (playerHandler.durabilityChanges >= 8) {
-						playerHandler.durabilityChanges = 1;
-
-						player.updateInventory();
-					} else {
-						playerHandler.durabilityChanges++;
-					}
-				}
-
-				//player.sendMessage(message);
+				state.item.setDurability(state.durability);
 			}
+
+			if (lookup.size() > 0) {
+				if (playerHandler.durabilityChanges >= 8) {
+					playerHandler.durabilityChanges = 1;
+
+					player.updateInventory();
+				} else {
+					playerHandler.durabilityChanges++;
+				}
+			}
+
+			//player.sendMessage(message);
 		};
 
 		plugin.getServer().getScheduler().runTask(plugin, runnable);
@@ -196,7 +180,7 @@ public class Listeners implements Listener {
 
 		// This should never happen.
 		if (fetchedPlayerHandler == null) {
-			playerHandler = new PlayerHandler(player);
+			playerHandler = new PlayerHandler(plugin, player);
 			players.put(id, playerHandler);
 		} else {
 			playerHandler = fetchedPlayerHandler;
@@ -236,19 +220,9 @@ public class Listeners implements Listener {
 				return;
 			}
 
-			final int experienceCeil = (int) Math.ceil(experienceMean);
-			final int experienceFloor = experienceMean.intValue();
-			final int experienceChange;
-
-			if (Math.random() > experienceMean - experienceFloor) {
-				experienceChange = 0 - experienceFloor;
-			} else {
-				experienceChange = 0 - experienceCeil;
-			}
-
 			//player.sendMessage("Restored " + repair + " durability for " + (-experienceChange) + " experience.");
 
-			playerHandler.xp.changeExp(experienceChange);
+			playerHandler.changeExp(-experienceMean);
 			currentItem.setDurability(state.durability);
 
 			if (playerHandler.durabilityChanges >= 8) {

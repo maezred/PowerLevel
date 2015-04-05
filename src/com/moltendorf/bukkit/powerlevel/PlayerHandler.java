@@ -4,6 +4,7 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitScheduler;
 
 import java.util.Deque;
 import java.util.LinkedHashSet;
@@ -14,19 +15,26 @@ import java.util.Set;
  * @author moltendorf
  */
 public class PlayerHandler {
+	public Plugin plugin;
 	public Player player;
+	public BukkitScheduler scheduler;
 
 	protected ExperienceManager xp;
 
 	protected int durabilityChanges = 0;
+	protected double experienceChange = 0;
+	protected int task = -1;
 
 	private Set<PotionEffectType> currentEffects = new LinkedHashSet<>(3);
 	private Set<PotionEffect> currentPotions = new LinkedHashSet<>(3);
 
 	private int currentEffectLevel = -1;
 
-	public PlayerHandler(Player player) {
+	public PlayerHandler(Plugin plugin, Player player) {
+		this.plugin = plugin;
 		this.player = player;
+
+		scheduler = plugin.getServer().getScheduler();
 
 		xp = new ExperienceManager(player);
 	}
@@ -42,6 +50,24 @@ public class PlayerHandler {
 			if (i == finalEffectLevel || i == effectLevel) {
 				return i - startingEffectLevel;
 			}
+		}
+	}
+
+	public void changeExp(double input) {
+		experienceChange += input;
+
+		if (task == -1) {
+			task = scheduler.scheduleSyncDelayedTask(plugin, () -> {
+				int change = (int) experienceChange;
+
+				if (Math.abs(change) >= 64) {
+					experienceChange -= change;
+
+					xp.changeExp(change);
+				}
+
+				task = -1;
+			}, 20 * 15);
 		}
 	}
 
