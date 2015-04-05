@@ -222,8 +222,12 @@ public class PlayerHandler {
 
 		player.addPotionEffects(currentPotions);
 
-		if (health <= player.getMaxHealth()) {
+		double maxHealth = player.getMaxHealth();
+
+		if (health <= maxHealth) {
 			player.setHealth(health);
+		} else {
+			player.setHealth(maxHealth);
 		}
 	}
 }
