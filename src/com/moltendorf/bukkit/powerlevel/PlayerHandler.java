@@ -46,11 +46,15 @@ public class PlayerHandler {
 	private int amplifier(final int effectLevel, final int startingEffectLevel, final int maximumAmplifier) {
 		final int finalEffectLevel = startingEffectLevel + maximumAmplifier;
 
-		for (int i = startingEffectLevel; ; ++i) {
-			if (i == finalEffectLevel || i == effectLevel) {
-				return i - startingEffectLevel;
+		int i = startingEffectLevel;
+
+		for (; i < finalEffectLevel ; ++i) {
+			if (i >= effectLevel) {
+				break;
 			}
 		}
+
+		return i - startingEffectLevel;
 	}
 
 	public void changeExp(double input) {
@@ -143,6 +147,9 @@ public class PlayerHandler {
 				}
 
 				if (effectLevel > currentEffectLevel) {
+					// Add extra hearts so the player doesn't have to regenerate.
+					health += (1 + amplifier - amplifier(currentEffectLevel, 6, 4)) * 4;
+
 					if (currentEffectLevel < 10) {
 						int number = amplifier + 1;
 
