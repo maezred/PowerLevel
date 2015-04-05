@@ -30,6 +30,8 @@ public class PlayerHandler {
 
 	private int currentEffectLevel = -1;
 
+	private long cooldown = 0;
+
 	public PlayerHandler(Plugin plugin, Player player) {
 		this.plugin = plugin;
 		this.player = player;
@@ -149,6 +151,8 @@ public class PlayerHandler {
 						// Add extra hearts so the player doesn't have to regenerate.
 						health += (1 + amplifier - amplifier(currentEffectLevel, 6, 4)) * 4;
 
+						cooldown = System.currentTimeMillis();
+
 						int number = amplifier + 1;
 
 						String string;
@@ -164,7 +168,7 @@ public class PlayerHandler {
 						messages.addLast("§2Health Boost " + string + " synthesized.");
 					}
 				} else if (currentEffectLevel > 6 && effectLevel < 10) {
-					if (health > 12) {
+					if ((System.currentTimeMillis() - cooldown) < 60000L && health > 8) {
 						// Remove extra hearts to prevent exploits.
 						health -= (1 + amplifier(currentEffectLevel, 6, 4) - amplifier) * 4;
 
@@ -190,7 +194,7 @@ public class PlayerHandler {
 				}
 
 			} else if (currentEffectLevel >= 6) {
-				if (health > 8) {
+				if ((System.currentTimeMillis() - cooldown) < 60000L && health > 8) {
 					// Remove extra hearts to prevent exploits.
 					health -= (1 + amplifier(currentEffectLevel, 6, 4)) * 4;
 
