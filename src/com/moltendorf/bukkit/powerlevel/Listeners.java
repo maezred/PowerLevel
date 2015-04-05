@@ -103,10 +103,10 @@ public class Listeners implements Listener {
 			ItemState state = new ItemState(item, 4);
 			lookup.put(type, state);
 
-			short minimumDurability = (short) (item.getType().getMaxDurability() - 4 * 8);
+			short minimumDurability = (short) (item.getType().getMaxDurability() - 24);
 
 			if (state.durability > minimumDurability) {
-				state.maxDifference = state.durability - minimumDurability + 4;
+				state.maxDifference = state.durability - minimumDurability + 12;
 
 				playerHandler.durabilityChanges = 8; // Force update.
 				state.durability = minimumDurability;
@@ -216,7 +216,7 @@ public class Listeners implements Listener {
 
 		final ItemState state = new ItemState(item, 3);
 
-		short minimumDurability = (short) (item.getType().getMaxDurability() - 3 * 8);
+		short minimumDurability = (short) (item.getType().getMaxDurability() - 24);
 
 		if (state.durability > minimumDurability) {
 			state.maxDifference = state.durability - minimumDurability + 3;
