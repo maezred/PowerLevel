@@ -149,7 +149,7 @@ public class PlayerHandler {
 				if (effectLevel > currentEffectLevel) {
 					if (currentEffectLevel < 10) {
 						// Add extra hearts so the player doesn't have to regenerate.
-						health += (1 + amplifier - amplifier(currentEffectLevel, 6, 4)) * 4;
+						health += ((amplifier > 0 ? amplifier : 1) - amplifier(currentEffectLevel, 6, 4)) * 4;
 
 						cooldown = System.currentTimeMillis();
 
@@ -170,7 +170,7 @@ public class PlayerHandler {
 				} else if (currentEffectLevel > 6 && effectLevel < 10) {
 					if ((System.currentTimeMillis() - cooldown) < 60000L && health > 8) {
 						// Remove extra hearts to prevent exploits.
-						health -= (1 + amplifier(currentEffectLevel, 6, 4) - amplifier) * 4;
+						health -= (amplifier(currentEffectLevel, 6, 4) - amplifier) * 4;
 
 						// Don't freaking kill them!
 						if (health < 8) {
