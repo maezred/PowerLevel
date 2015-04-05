@@ -262,7 +262,7 @@ public class Configuration {
 		}};
 
 		final protected Map<Material, Double> equipmentValueMultipliers = new HashMap<Material, Double>() {{
-			final double b = .8; // Base cost modifier.
+			final double b = .6; // Base cost modifier.
 			final double d = .1875; // Additional discount.
 
 			final double dtd = 1562; // Diamond tool durability: 1562.
