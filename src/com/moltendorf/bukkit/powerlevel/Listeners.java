@@ -252,14 +252,19 @@ public class Listeners implements Listener {
 
 		// +1 to avoid flickering health bar on tool.
 		if (durability > 1) {
-			if (durability <= state.durability) {
+			if (durability < state.durability) {
 				// If equal then remove, but if it's less than, then: W.T.F.? Hacks? But still remove.
 				return null;
 			}
 
 			final int difference;
 
-			if (state.durability > 0) {
+			if (state.durability > 1) {
+				// 1% roll for +1.
+				if (Math.random() < .01) {
+					state.durability -= 1;
+				}
+
 				difference = durability - state.durability;
 			} else {
 				// Minus 1 to preserve the health bar.
@@ -307,18 +312,7 @@ public class Listeners implements Listener {
 				}
 			}
 
-			final int repair;
-
-			// 1% roll for +1.
-			if (state.durability > 1 && Math.random() < .01) {
-				repair = difference + 1;
-
-				state.durability -= 1;
-			} else {
-				repair = difference;
-			}
-
-			return repair * playerHandler.xp.getXpForLevel(levelCost) / experienceDenominator;
+			return difference * playerHandler.xp.getXpForLevel(levelCost) / experienceDenominator;
 		} else {
 			return null;
 		}
