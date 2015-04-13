@@ -388,7 +388,7 @@ public class Listeners implements Listener {
 		}
 	}
 
-	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	public void EntityDamageEventMonitor(final EntityDamageEvent event) {
 
 		// Are we enabled at all?
@@ -414,13 +414,23 @@ public class Listeners implements Listener {
 				}
 
 				if (playerHandler.currentEffectLevel > 1) {
-					player.setFallDistance(player.getFallDistance() / 1.5f);
+					if (player.getFallDistance() < 7) {
+						event.setCancelled(true);
+					} else {
+						event.setDamage(event.getDamage() / 1.5);
+					}
 				} else if (playerHandler.currentEffectLevel > 0) {
-					player.setFallDistance(player.getFallDistance() / 1.25f);
+					if (player.getFallDistance() < 5.5) {
+						event.setCancelled(true);
+					} else {
+						event.setDamage(event.getDamage() / 1.25);
+					}
 				}
 			}
 
-			repairArmor(player, event);
+			if (!event.isCancelled()) {
+				repairArmor(player, event);
+			}
 		}
 	}
 
