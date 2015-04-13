@@ -397,7 +397,30 @@ public class Listeners implements Listener {
 		}
 
 		if (event.getEntityType() == EntityType.PLAYER) {
-			repairArmor((Player) event.getEntity(), event);
+			final Player player = (Player) event.getEntity();
+
+			if (event.getCause() == EntityDamageEvent.DamageCause.FALL) {
+				final UUID id = player.getUniqueId();
+
+				final PlayerHandler playerHandler;
+				PlayerHandler fetchedPlayerHandler = players.get(id);
+
+				// This should never happen.
+				if (fetchedPlayerHandler == null) {
+					playerHandler = new PlayerHandler(plugin, player);
+					players.put(id, playerHandler);
+				} else {
+					playerHandler = fetchedPlayerHandler;
+				}
+
+				if (playerHandler.currentEffectLevel > 1) {
+					player.setFallDistance(player.getFallDistance() / 1.5f);
+				} else if (playerHandler.currentEffectLevel > 0) {
+					player.setFallDistance(player.getFallDistance() / 1.25f);
+				}
+			}
+
+			repairArmor(player, event);
 		}
 	}
 

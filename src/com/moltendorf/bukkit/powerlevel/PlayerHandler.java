@@ -28,7 +28,7 @@ public class PlayerHandler {
 	private Set<PotionEffectType> currentEffects = new LinkedHashSet<>(3);
 	private Set<PotionEffect> currentPotions = new LinkedHashSet<>(3);
 
-	private int currentEffectLevel = -1;
+	protected int currentEffectLevel = -1;
 
 	private long cooldown = 0;
 
