@@ -17,6 +17,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.Potion;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.*;
@@ -414,17 +415,19 @@ public class Listeners implements Listener {
 				}
 
 				if (playerHandler.currentEffectLevel > 1) {
-					if (player.getFallDistance() < 7) {
+					if (player.getFallDistance() < 8) {
 						event.setCancelled(true);
 					} else {
 						event.setDamage(event.getDamage() / 1.5);
 					}
 				} else if (playerHandler.currentEffectLevel > 0) {
-					if (player.getFallDistance() < 5.5) {
+					if (player.getFallDistance() < 7) {
 						event.setCancelled(true);
 					} else {
 						event.setDamage(event.getDamage() / 1.25);
 					}
+				} else if (player.getFallDistance() < 5) {
+					event.setCancelled(true);
 				}
 			}
 
