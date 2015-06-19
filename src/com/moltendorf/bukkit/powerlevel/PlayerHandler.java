@@ -146,13 +146,13 @@ public class PlayerHandler {
 			if (effectLevel >= 6) {
 				int amplifier = amplifier(effectLevel, 6, 4);
 
-				healthScale += (double)healthScale / healthMax * healthBonus * (amplifier + 1);
+				healthScale += (double) healthScale / healthMax * healthBonus * (amplifier + 1);
 				healthMax += healthBonus * (amplifier + 1);
 
 				if (effectLevel > currentEffectLevel) {
 					if (currentEffectLevel < 10) {
 						// Add extra hearts so the player doesn't have to regenerate.
-						health += ((amplifier > 0 ? amplifier : 1) - amplifier(currentEffectLevel, 6, 4)) * healthBonus;
+						health += healthMax - player.getMaxHealth();
 
 						cooldown = System.currentTimeMillis();
 
@@ -173,7 +173,7 @@ public class PlayerHandler {
 				} else if (currentEffectLevel > 6 && effectLevel < 10) {
 					if ((System.currentTimeMillis() - cooldown) < 60000L && health > 8) {
 						// Remove extra hearts to prevent exploits.
-						health -= (amplifier(currentEffectLevel, 6, 4) - amplifier) * healthBonus;
+						health -= player.getMaxHealth() - healthMax;
 
 						// Don't freaking kill them!
 						if (health < 8) {
@@ -199,7 +199,7 @@ public class PlayerHandler {
 			} else if (currentEffectLevel >= 6) {
 				if ((System.currentTimeMillis() - cooldown) < 60000L && health > 8) {
 					// Remove extra hearts to prevent exploits.
-					health -= (1 + amplifier(currentEffectLevel, 6, 4)) * healthBonus;
+					health -= player.getMaxHealth() - healthMax;
 
 					// Don't freaking kill them!
 					if (health < 8) {
@@ -209,6 +209,9 @@ public class PlayerHandler {
 
 				// currentEffectLevel assumed to be higher than 0.
 				messages.addFirst("§4Health Boost I dispersed.");
+			} else {
+				// Add extra hearts so the player doesn't have to regenerate.
+				health += healthMax - player.getMaxHealth();
 			}
 
 			Set<PotionEffectType> effects = new LinkedHashSet<>();
