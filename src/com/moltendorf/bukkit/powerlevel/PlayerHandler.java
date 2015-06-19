@@ -209,7 +209,7 @@ public class PlayerHandler {
 
 				// currentEffectLevel assumed to be higher than 0.
 				messages.addFirst("§4Health Boost I dispersed.");
-			} else {
+			} else if (player.getMaxHealth() < healthMax) {
 				// Add extra hearts so the player doesn't have to regenerate.
 				health += healthMax - player.getMaxHealth();
 			}
