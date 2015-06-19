@@ -138,18 +138,21 @@ public class PlayerHandler {
 				messages.addFirst("§4Repair dispersed.");
 			}
 
+			int healthMax = 60;
+			int healthScale = 30;
+			int healthBonus = 4;
+
 			// Level 75-95 bonuses.
 			if (effectLevel >= 6) {
 				int amplifier = amplifier(effectLevel, 6, 4);
 
-				if (amplifier >= 0) {
-					currentPotions.add(new PotionEffect(PotionEffectType.HEALTH_BOOST, 1200, amplifier, true));
-				}
+				healthScale += (double)healthScale / healthMax * healthBonus * (amplifier + 1);
+				healthMax += healthBonus * (amplifier + 1);
 
 				if (effectLevel > currentEffectLevel) {
 					if (currentEffectLevel < 10) {
 						// Add extra hearts so the player doesn't have to regenerate.
-						health += ((amplifier > 0 ? amplifier : 1) - amplifier(currentEffectLevel, 6, 4)) * 4;
+						health += ((amplifier > 0 ? amplifier : 1) - amplifier(currentEffectLevel, 6, 4)) * healthBonus;
 
 						cooldown = System.currentTimeMillis();
 
@@ -170,7 +173,7 @@ public class PlayerHandler {
 				} else if (currentEffectLevel > 6 && effectLevel < 10) {
 					if ((System.currentTimeMillis() - cooldown) < 60000L && health > 8) {
 						// Remove extra hearts to prevent exploits.
-						health -= (amplifier(currentEffectLevel, 6, 4) - amplifier) * 4;
+						health -= (amplifier(currentEffectLevel, 6, 4) - amplifier) * healthBonus;
 
 						// Don't freaking kill them!
 						if (health < 8) {
@@ -196,7 +199,7 @@ public class PlayerHandler {
 			} else if (currentEffectLevel >= 6) {
 				if ((System.currentTimeMillis() - cooldown) < 60000L && health > 8) {
 					// Remove extra hearts to prevent exploits.
-					health -= (1 + amplifier(currentEffectLevel, 6, 4)) * 4;
+					health -= (1 + amplifier(currentEffectLevel, 6, 4)) * healthBonus;
 
 					// Don't freaking kill them!
 					if (health < 8) {
@@ -218,6 +221,9 @@ public class PlayerHandler {
 			currentEffectLevel = effectLevel;
 
 			messages.forEach(player::sendMessage);
+
+			player.setMaxHealth(healthMax);
+			player.setHealthScale(healthScale);
 		}
 
 		player.addPotionEffects(currentPotions);
