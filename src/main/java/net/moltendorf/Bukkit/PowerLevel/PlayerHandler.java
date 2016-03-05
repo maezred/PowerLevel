@@ -15,7 +15,7 @@ import java.util.Set;
  * @author moltendorf
  */
 public class PlayerHandler {
-	public Plugin plugin;
+	public PowerLevel plugin;
 	public Player player;
 	public BukkitScheduler scheduler;
 
@@ -32,7 +32,7 @@ public class PlayerHandler {
 
 	private long cooldown = 0;
 
-	public PlayerHandler(Plugin plugin, Player player) {
+	public PlayerHandler(PowerLevel plugin, Player player) {
 		this.plugin = plugin;
 		this.player = player;
 

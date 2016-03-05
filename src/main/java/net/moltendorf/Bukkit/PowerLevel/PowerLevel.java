@@ -9,7 +9,7 @@ import org.bukkit.plugin.java.JavaPlugin;
  *
  * @author moltendorf
  */
-public class Plugin extends JavaPlugin {
+public class PowerLevel extends JavaPlugin {
 
 	// Variable data.
 	protected Configuration configuration = null;

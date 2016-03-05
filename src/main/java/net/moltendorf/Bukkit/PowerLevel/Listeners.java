@@ -28,13 +28,13 @@ import java.util.*;
  */
 public class Listeners implements Listener {
 
-	final protected Plugin plugin;
+	final protected PowerLevel plugin;
 
 	protected BukkitTask clock = null;
 
 	protected Map<UUID, PlayerHandler> players = new LinkedHashMap<>();
 
-	protected Listeners(final Plugin instance) {
+	protected Listeners(final PowerLevel instance) {
 		plugin = instance;
 
 		for (Player player : plugin.getServer().getOnlinePlayers()) {
