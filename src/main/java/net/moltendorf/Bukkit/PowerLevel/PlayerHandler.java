@@ -200,18 +200,26 @@ public class PlayerHandler {
 
 			messages.forEach(player::sendMessage);
 
-			player.setMaxHealth(healthMax);
-			player.setHealthScale(healthScale);
+			if (player.getMaxHealth() != healthMax) {
+				player.setMaxHealth(healthMax);
+				player.setHealthScale(healthMax);
+			}
+
+//			if (player.getHealthScale() != healthScale) {
+//				player.setHealthScale(healthScale);
+//			}
 		}
 
 		player.addPotionEffects(currentPotions);
 
 		double maxHealth = player.getMaxHealth();
 
-		if (health <= maxHealth) {
+		if (health > maxHealth) {
+			health = maxHealth;
+		}
+
+		if (health != player.getHealth()) {
 			player.setHealth(health);
-		} else {
-			player.setHealth(maxHealth);
 		}
 	}
 
