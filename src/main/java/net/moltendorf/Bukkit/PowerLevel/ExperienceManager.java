@@ -8,12 +8,12 @@ import java.util.Arrays;
 
 /**
  * @author desht
- *         <p/>
+ *         <p>
  *         Adapted from ExperienceUtils code originally in ScrollingMenuSign.
- *         <p/>
+ *         <p>
  *         Credit to nisovin (http://forums.bukkit.org/threads/experienceutils-make-giving-taking-exp-a-bit-more-intuitive.54450/#post-1067480)
  *         for an implementation that avoids the problems of getTotalExperience(), which doesn't work properly after a player has enchanted something.
- *         <p/>
+ *         <p>
  *         Credit to comphenix for further contributions:
  *         See http://forums.bukkit.org/threads/experiencemanager-was-experienceutils-make-giving-taking-exp-a-bit-more-intuitive.54450/page-3#post-1273622
  */
@@ -83,8 +83,8 @@ public class ExperienceManager {
 	 * using the lookup tables. This is needed if getLevelForExp() is called
 	 * with an XP quantity beyond the range of the existing lookup tables.
 	 *
-	 * @param exp
-	 * @return
+	 * @param exp experience to use in calculation
+	 * @return level
 	 */
 	private static int calculateLevelForExp(int exp) {
 		int level = 0;
@@ -182,8 +182,8 @@ public class ExperienceManager {
 		Player player = getPlayer();
 
 		int lvl = player.getLevel();
-		int cur = getXpForLevel(lvl) + (int) Math.round(getXpNeededToLevelUp(lvl) * player.getExp());
-		return cur;
+
+		return getXpForLevel(lvl) + Math.round(getXpNeededToLevelUp(lvl) * player.getExp());
 	}
 
 	/**
@@ -195,8 +195,7 @@ public class ExperienceManager {
 		Player player = getPlayer();
 
 		int lvl = player.getLevel();
-		double cur = getXpForLevel(lvl) + (double) (getXpNeededToLevelUp(lvl) * player.getExp());
-		return cur;
+		return getXpForLevel(lvl) + (double) (getXpNeededToLevelUp(lvl) * player.getExp());
 	}
 
 	/**

@@ -76,7 +76,7 @@ public class Configuration {
 			Material.SHEARS
 		));
 
-		final protected Set<Material> bowEquipment = new HashSet<>(Arrays.asList(
+		final protected Set<Material> bowEquipment = new HashSet<>(Collections.singletonList(
 			Material.BOW
 		));
 
@@ -93,15 +93,15 @@ public class Configuration {
 			Material.GRASS
 		));
 
-		final protected Set<Material> fireEquipment = new HashSet<>(Arrays.asList(
+		final protected Set<Material> fireEquipment = new HashSet<>(Collections.singletonList(
 			Material.FLINT_AND_STEEL
 		));
 
-		final protected Set<Material> fishingEquipment = new HashSet<>(Arrays.asList(
+		final protected Set<Material> fishingEquipment = new HashSet<>(Collections.singletonList(
 			Material.FISHING_ROD
 		));
 
-		final protected Set<Material> shearEquipment = new HashSet<>(Arrays.asList(
+		final protected Set<Material> shearEquipment = new HashSet<>(Collections.singletonList(
 			Material.SHEARS
 		));
 

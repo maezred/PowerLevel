@@ -10,6 +10,7 @@ import java.util.Deque;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @author moltendorf
@@ -158,17 +159,7 @@ public class PlayerHandler {
 
 						int number = amplifier + 1;
 
-						String string;
-
-						if (number > 4) {
-							string = "V";
-						} else if (number > 3) {
-							string = "IV";
-						} else {
-							string = StringUtils.repeat("I", number);
-						}
-
-						messages.addLast("§2Health Boost " + string + " synthesized.");
+						messages.addLast("§2Health Boost " + getRomanNumeral(number) + " synthesized.");
 					}
 				} else if (currentEffectLevel > 6 && effectLevel < 10) {
 					if ((System.currentTimeMillis() - cooldown) < 60000L && health > 8) {
@@ -183,17 +174,7 @@ public class PlayerHandler {
 
 					int number = amplifier + 2;
 
-					String string;
-
-					if (number > 4) {
-						string = "V";
-					} else if (number > 3) {
-						string = "IV";
-					} else {
-						string = StringUtils.repeat("I", number);
-					}
-
-					messages.addFirst("§4Health Boost " + string + " dispersed.");
+					messages.addFirst("§4Health Boost " + getRomanNumeral(number) + " dispersed.");
 				}
 
 			} else if (currentEffectLevel >= 6) {
@@ -214,13 +195,7 @@ public class PlayerHandler {
 				health += healthMax - player.getMaxHealth();
 			}
 
-			Set<PotionEffectType> effects = new LinkedHashSet<>();
-
-			for (PotionEffect potion : currentPotions) {
-				effects.add(potion.getType());
-			}
-
-			currentEffects = effects;
+			currentEffects = currentPotions.stream().map(PotionEffect::getType).collect(Collectors.toCollection(LinkedHashSet::new));
 			currentEffectLevel = effectLevel;
 
 			messages.forEach(player::sendMessage);
@@ -237,6 +212,16 @@ public class PlayerHandler {
 			player.setHealth(health);
 		} else {
 			player.setHealth(maxHealth);
+		}
+	}
+
+	private static String getRomanNumeral(int number) {
+		if (number > 4) {
+			return "V";
+		} else if (number > 3) {
+			return "IV";
+		} else {
+			return StringUtils.repeat("I", number);
 		}
 	}
 }

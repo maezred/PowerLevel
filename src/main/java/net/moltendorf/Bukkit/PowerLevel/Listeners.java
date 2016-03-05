@@ -37,9 +37,7 @@ public class Listeners implements Listener {
 	protected Listeners(final PowerLevel instance) {
 		plugin = instance;
 
-		for (Player player : plugin.getServer().getOnlinePlayers()) {
-			refreshEffects(player);
-		}
+		plugin.getServer().getOnlinePlayers().forEach(this::refreshEffects);
 
 		final Runnable runnable;
 
