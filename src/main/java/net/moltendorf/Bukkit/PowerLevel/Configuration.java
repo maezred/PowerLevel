@@ -1,4 +1,4 @@
-package com.moltendorf.bukkit.powerlevel;
+package net.moltendorf.Bukkit.PowerLevel;
 
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;

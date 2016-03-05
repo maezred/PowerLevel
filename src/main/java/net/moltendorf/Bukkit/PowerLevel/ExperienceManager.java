@@ -1,4 +1,4 @@
-package com.moltendorf.bukkit.powerlevel;
+package net.moltendorf.Bukkit.PowerLevel;
 
 import org.apache.commons.lang.Validate;
 import org.bukkit.entity.Player;
