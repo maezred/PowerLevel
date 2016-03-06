@@ -6,7 +6,7 @@
 
 	<groupId>net.moltendorf.Bukkit</groupId>
 	<artifactId>PowerLevel</artifactId>
-	<version>1.20.22</version>
+	<version>1.20.24</version>
 
 	<name>${artifactId}</name>
 	<description>Makes players more powerful when they hold onto their levels instead of spending them.</description>
