@@ -202,12 +202,11 @@ public class PlayerHandler {
 
 			if (player.getMaxHealth() != healthMax) {
 				player.setMaxHealth(healthMax);
-				player.setHealthScale(healthMax);
 			}
 
-//			if (player.getHealthScale() != healthScale) {
-//				player.setHealthScale(healthScale);
-//			}
+			if (player.getHealthScale() != healthScale) {
+				player.setHealthScale(healthScale);
+			}
 		}
 
 		player.addPotionEffects(currentPotions);
